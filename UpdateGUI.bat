@@ -1,0 +1,2 @@
+python UpdateGUI.py
+pause
