@@ -200,3 +200,6 @@ class MyQTableWidgetItem(QtWidgets.QTableWidgetItem):
         else:
             self.setFlags(self.flags() & (~Qt.ItemIsEditable))# ^ Qt.ItemIsSelectable)
             #self.setFlags(self.flags() & ~Qt.ItemIsEditable)
+
+class ThreadStopped(Exception):
+    pass

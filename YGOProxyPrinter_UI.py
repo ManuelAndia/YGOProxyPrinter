@@ -39,8 +39,9 @@ if sys.platform.startswith('win'): # Windows only
 # Global parameters (for initialisation)
 # =============================================================================
 # Application icon path
-LOGO_RELATIVE_PATH = "img" + os.path.sep + "logo.ico"
+LOGO_RELATIVE_PATH = "img" + os.path.sep + "logo-96.ico"
 EXPORT_PDF_BUTTON_ICON = r"img/floppy-disk.png"
+DELETE_BUTTON_ICON = r"img/delete.png"
 
 # Window size
 WINDOW_SIZE = (707, 1000)
@@ -63,7 +64,18 @@ EXPORT_PDF_BUTTON_TEXT = {"onStart": "STOP", "onStop": "Export PDF"}
 #%%============================================================================
 # Definitions - functions and decorators
 # =============================================================================
-
+def calculate_source_frame_number(n, direction):
+    assert(n>=0 and n<=N_CARDS)
+    if direction=="up":
+        return n-3
+    elif direction=="down":
+        return n+3
+    elif direction=="left":
+        return n-1
+    elif direction=="right":
+        return n+1
+    else:
+        raise NotImplementedError("`direction` must be either `up`, `down`, `left` or `right`.")
 
 #%%============================================================================
 # Definitions - classes
@@ -89,9 +101,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_card_edits = {}
         self.search_card_combos = {}
         self.copy_from_buttons = {}
+        self.delete_buttons = {}
         
         # Give each widget a number corresponding to the card number
-        for n in range(N_CARDS):
+        for n in range(N_CARDS+1):
             _frame = self.__getattribute__(f"frame_{n}") # get frame number n
             _frame.search_results = CardList([]) # initialise each frame with an empty search result
             _frame.image = None # initialise each frame with a None image
@@ -107,9 +120,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                          "down":    self.__getattribute__(f"CopyDownButton_{n}"),
                                          "left":    self.__getattribute__(f"CopyLeftButton_{n}"),
                                          "right":   self.__getattribute__(f"CopyRightButton_{n}")}
+            self.delete_buttons[n] = self.__getattribute__(f"DeleteButton_{n}")
         
-        # Set export button icon
+        # Set icons
         self.ExportPDFButton.setIcon(QtGui.QIcon(os.path.join(scriptDir, EXPORT_PDF_BUTTON_ICON)))
+        for n in range(N_CARDS+1):
+            self.delete_buttons[n].setIcon(QtGui.QIcon(os.path.join(scriptDir, DELETE_BUTTON_ICON)))
         
         # Connect each widget to its function
         self.GetImagesButton.clicked.connect(lambda checked:self.pull_images()) # Note: lambda checked is ONLY for QButtons;
@@ -118,7 +134,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                                                                 # (specifically) is pressed, otherwise
                                                                                 # the report_exceptions decorator doesn't work!
         self.ExportPDFButton.clicked.connect(lambda checked:self.export_PDF())
-        for n in range(N_CARDS):
+        for n in range(N_CARDS+1):
             self.search_card_edits[n].returnPressed.connect(self.search_card_name) # editingFinished also works, includes losing focus
             self.copy_from_buttons[n]["up"].direction = "up" # set a property called "direction"
             self.copy_from_buttons[n]["up"].clicked.connect(lambda checked:self.copy_from())
@@ -128,6 +144,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.copy_from_buttons[n]["left"].clicked.connect(lambda checked:self.copy_from())
             self.copy_from_buttons[n]["right"].direction = "right"
             self.copy_from_buttons[n]["right"].clicked.connect(lambda checked:self.copy_from())
+            self.delete_buttons[n].clicked.connect(lambda checked: self.reset_frame())
         
         # Initialise worker threads
         self.worker_thread_card_search = WorkerThreadCardSearch() # this is the worker thread object
@@ -155,35 +172,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #%% Search card name thread
     @report_exceptions
     def search_card_name(self):
-        # if self.worker_thread_card_search.isRunning(): # check if the thread is already running
-        #     print("BALBALBLAB")
-        #     self.worker_thread_card_search.stop() # stop the thread
-        #     self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
-        #                         stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"]) # reset the buttons
-        
-        # Toggle buttons and make the "Get images" button a stop button (with STOP text)
-        self.toggle_widgets(state="start", stop_button=self.GetImagesButton,
-                            stop_button_text=GET_IMAGES_BUTTON_TEXT["onStart"])
-        
-        # Get relevant properties
-        sender = self.sender()
-        n = sender.card_number # get card number of sender
-        # Inform the worker thread of these properties
-        self.worker_thread_card_search.n = n
-        self.worker_thread_card_search.all_params = self.all_params
-        
-        # Finally start the thread
-        self.worker_thread_card_search.start()
+        if not self.worker_thread_card_search.isRunning():
+            # Toggle buttons and make the "Get images" button a stop button (with STOP text)
+            self.toggle_widgets(state="start")
+            
+            # Get relevant properties
+            sender = self.sender()
+            n = sender.card_number # get card number of sender
+            # Inform the worker thread of these properties
+            self.worker_thread_card_search.n = n
+            self.worker_thread_card_search.all_params = self.all_params
+            
+            # Finally start the thread
+            self.worker_thread_card_search.start()
+        else:
+            self.worker_thread_card_search.stop()
     
     @report_exceptions
     def card_search_finished(self, worker_thread_output):
         if type(worker_thread_output) is int: # just update the progress bar
             self.update_progressBar(worker_thread_output)
-        elif type(worker_thread_output) is Exception:
+        elif isinstance(worker_thread_output, Exception):
             show_error("Something went wrong during card name search.",
                        worker_thread_output)
-            self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop")
         elif type(worker_thread_output) is dict: # This means that the thread finished!
             name_matches = worker_thread_output["name_matches"]
             n = worker_thread_output["n"]
@@ -193,27 +205,32 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 _combobox = self.search_card_combos[n]
                 _combobox.clear()
                 _combobox.addItems(name_matches.card_list.Name) # list of all found card names
-            self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop")
+            if n<N_CARDS: self.search_card_edits[n+1].setFocus() # give focus to the next card-search text
     
     #%% Card image pull thread
     @report_exceptions
     def pull_images(self):
-        # Toggle buttons
-        self.toggle_widgets(state="start", stop_button=self.GetImagesButton,
-                            stop_button_text=GET_IMAGES_BUTTON_TEXT["onStart"])
-        
-        # Inform the worker thread
-        self.worker_thread_card_image_pull.all_params = self.all_params
-        
-        # Finally start the thread
-        self.worker_thread_card_image_pull.start()
+        if not self.worker_thread_card_image_pull.isRunning():
+            # Toggle buttons
+            self.toggle_widgets(state="start", stop_button=self.GetImagesButton,
+                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStart"])
+            
+            # Inform the worker thread
+            self.worker_thread_card_image_pull.all_params = self.all_params
+            
+            # Finally start the thread
+            self.worker_thread_card_image_pull.start()
+        else:
+            self.worker_thread_card_image_pull.stop()
+            self.toggle_widgets(state="stopping", stop_button=self.GetImagesButton,
+                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
     
     @report_exceptions
     def image_pull_finished(self, worker_thread_output):
         if type(worker_thread_output) is int: # just update the progress bar
             self.update_progressBar(worker_thread_output)
-        elif type(worker_thread_output) is Exception:
+        elif isinstance(worker_thread_output, Exception):
             show_error("Something went wrong while getting the images.",
                        worker_thread_output)
             self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
@@ -251,24 +268,29 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     #%% Export PDF thread
     @report_exceptions
     def export_PDF(self):
-        _file = self.get_save_file()
-        
-        # Toggle buttons
-        self.toggle_widgets(state="start", stop_button=self.ExportPDFButton,
-                            stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStart"])
-        
-        # Inform the worker thread
-        self.worker_thread_PDF_export.all_params = self.all_params
-        self.worker_thread_PDF_export.save_file = _file
-        
-        # Finally start the thread
-        self.worker_thread_PDF_export.start()
+        if not self.worker_thread_PDF_export.isRunning():
+            _file = self.get_save_file()
+            
+            # Toggle buttons
+            self.toggle_widgets(state="start", stop_button=self.ExportPDFButton,
+                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStart"])
+            
+            # Inform the worker thread
+            self.worker_thread_PDF_export.all_params = self.all_params
+            self.worker_thread_PDF_export.save_file = _file
+            
+            # Finally start the thread
+            self.worker_thread_PDF_export.start()
+        else:
+            self.worker_thread_PDF_export.stop()
+            self.toggle_widgets(state="stopping", stop_button=self.ExportPDFButton,
+                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStop"])
     
     @report_exceptions
     def PDF_export_finished(self, worker_thread_output):
         if type(worker_thread_output) is int: # just update the progress bar
             self.update_progressBar(worker_thread_output)
-        elif type(worker_thread_output) is Exception:
+        elif isinstance(worker_thread_output, Exception):
             show_error("Something went wrong during PDF export.",
                        worker_thread_output)
             self.toggle_widgets(state="stop", stop_button=self.ExportPDFButton,
@@ -276,7 +298,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif type(worker_thread_output) is dict: # This means that the thread finished!
             file_saved = worker_thread_output["file_saved"]
             show_save_confirmation("File successfully saved:", file_saved,
-                                   save_folder=os.path.dirname(file_saved))
+                                   save_folder=os.path.abspath(file_saved))
             self.toggle_widgets(state="stop", stop_button=self.ExportPDFButton,
                                 stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStop"])
     
@@ -286,13 +308,30 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.progressBar.setValue(p)
     
     @report_exceptions
-    def update_frame(self):
+    def reset_frame(self):
         sender = self.sender()
         n = sender.card_number # get card number of sender
+        _frame = self.frames[n]
+        _frame.search_results = CardList([])
+        _frame.image = None
+        _frame.setPalette(QtGui.QPalette())
+        self.search_card_combos[n].clear()
+        self.search_card_edits[n].clear()
     
     @report_exceptions
     def copy_from(self):
-        pass
+        sender = self.sender()
+        n = sender.card_number
+        direction = sender.direction
+        m = calculate_source_frame_number(n, direction)
+        source_frame = self.frames[m]
+        _frame = self.frames[n]
+        _frame.search_results = source_frame.search_results
+        _combobox = self.search_card_combos[n]
+        _combobox.clear()
+        _combobox.addItems(source_frame.search_results.Name) # list of all found card names
+        _combobox.setCurrentIndex(self.search_card_combos[m].currentIndex())
+        self.search_card_edits[n].setText(self.search_card_edits[m].text())
     
     @report_exceptions
     def show_PDF_file(self):
@@ -305,7 +344,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         res = Parameters()
         
         res.frame_contents = {}
-        for n in range(N_CARDS):
+        for n in range(N_CARDS+1):
             res.frame_contents[n] = {"card_search_text":    self.search_card_edits[n].text(),
                                      "search_results":      self.frames[n].search_results,
                                      "current_index":       self.search_card_combos[n].currentIndex(),
@@ -322,61 +361,25 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             stop_button.setText(stop_button_text)
             if state=="start":
                 stop_button.setStyleSheet("color:red;")
-            else:
-                stop_button.setStyleSheet("color:black;")
+                stop_button.setEnabled(True)
+            elif state=="stopping":
+                stop_button.setStyleSheet("")
+                stop_button.setEnabled(False)
+            elif state=="stop":
+                stop_button.setStyleSheet("")
+                stop_button.setEnabled(True)
             widgets_list.remove(stop_button) # remove stop_button from list of widgets to toggle
         new_state = False if state=="start" else True
         for widget in widgets_list:
             widget.setEnabled(new_state)
         if state=="start":
             self.update_progressBar(0)
-        else:
+        elif state=="stopping":
+            self.update_progressBar(100)
+        elif state=="stop":
             self.update_progressBar(100)
     
-    @report_exceptions
-    def export_results(self):
-        _file = self.get_save_file(default_name=self.all_params.dataset_name)
-        date_str = datetime.now().strftime("%Y_%m_%d-%Hh%Mmn%Ss_")
-                
-        filename = os.path.basename(_file)
-        dirname = os.path.dirname(_file)
-        # new_filename = date_str + filename
-        # full_name = os.path.join(dirname, new_filename)
-        full_name = os.path.join(dirname, filename)
-        
-        # Save results as .txt
-        with open(full_name, "w") as f:
-            f.write(self.DisplayResultsTextEdit.toPlainText())
-        
-        # Save figures
-        list_figures_saved = []
-        dirname_fig = os.path.join(dirname, "img") # save figures into "img" subfolder
-        safe_path_creation(dirname_fig) # make folder if non existent
-        for popup in self.list_popups:
-            figname = slugify(date_str + os.path.splitext(filename)[0] + "_" + popup.popup_title) + ".png"
-            full_figname = os.path.join(dirname_fig, figname)
-            popup.figure.figure.savefig(full_figname)
-            list_figures_saved.append(full_figname)
-        
-        show_save_confirmation("Files were successfully saved:", "\n".join([full_name] + list_figures_saved),
-                                save_folder=os.path.abspath(dirname))
-    
-    # Utilities
-    def get_folder(self, widget):
-        _datafolder_start = folder_of_the_day()
-        _datafolder = str(QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory", _datafolder_start))
-        if len(_datafolder)>0:
-            self.datafolder = _datafolder
-            widget.setText(self.datafolder)
-    
-    def get_file(self, widget=None):
-        _datafolder_start = folder_of_the_day()
-        _datafile = QtWidgets.QFileDialog.getOpenFileName(self, "Select File", _datafolder_start)[0]
-        if len(_datafile)>0:
-            if widget is not None: widget.setText(_datafile)
-            return _datafile
-        else: return None
-    
+    #%% Utilities
     def get_save_file(self, message="Select file to save data", default_name="",
                       formats="PDF (*.pdf)"):
         #_datafolder_start = os.path.join(folder_of_the_day(), default_name)

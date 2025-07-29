@@ -1,4 +1,5 @@
 asteval==0.9.18
+auto-py-to-exe==2.46.0
 cycler==0.10.0
 defusedxml==0.7.1
 et-xmlfile==2.0.0

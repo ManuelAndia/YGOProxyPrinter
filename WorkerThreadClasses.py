@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QThread, pyqtSignal
 from YGOCardTools import NameMatchesFromYGOProDeck
 from fpdf import FPDF
+from Utilities_Qt import ThreadStopped
 
 # =============================================================================
 # Default parameters
@@ -44,9 +45,9 @@ class WorkerThreadCardSearch(QThread):
         except Exception as err:
             self.signal.emit(err)
             return
-
+    
     def stop(self):
-        self.is_running = False
+        self.requestInterruption()
 
 class WorkerThreadCardImagePull(QThread):
     
@@ -69,13 +70,15 @@ class WorkerThreadCardImagePull(QThread):
             res_images = {}
             
             for i, (n, frame_contents) in enumerate(all_params.frame_contents.items()):
+                if self.isInterruptionRequested():
+                    raise ThreadStopped("Thread was interrupted by user.")
                 search_results = frame_contents["search_results"]
                 if len(search_results) > 0:
                     ind = frame_contents["current_index"] # current index of the combo box
                     _card = search_results[ind] # Card instance corresponding to the currently-selected search result
                     res[n] = _card.get_image_raw()
                     res_images[n] = _card.get_image()
-                self.signal.emit(10 + (i/(N-1))*(80-10))
+                self.signal.emit(int(10 + (i/(N-1))*(80-10)))
             
             self.signal.emit(80)
             
@@ -86,6 +89,9 @@ class WorkerThreadCardImagePull(QThread):
         except Exception as err:
             self.signal.emit(err)
             return
+    
+    def stop(self):
+        self.requestInterruption()
 
 class WorkerThreadPDFExport(QThread):
     
@@ -93,11 +99,10 @@ class WorkerThreadPDFExport(QThread):
 
     def __init__(self):
         QThread.__init__(self)
-        
+    
     # run method gets called when we start the thread
     def run(self):
         self.signal.emit(0)
-        
         all_params = self.all_params
         save_file = self.save_file
         
@@ -108,7 +113,7 @@ class WorkerThreadPDFExport(QThread):
             
             pdf = FPDF()
             
-            pdf.add_page(size="A4")
+            pdf.add_page(format="A4", orientation="portrait")
             
             l = 210 # page width in mm
             card_w = 59 # card width in mm
@@ -119,6 +124,8 @@ class WorkerThreadPDFExport(QThread):
             y = (L - 3*card_h)/2 # ordinates of top side of top card
             
             for i, (n, frame_contents) in enumerate(all_params.frame_contents.items()):
+                if self.isInterruptionRequested():
+                    raise ThreadStopped("Thread was interrupted by user.")
                 _image = frame_contents["image"]
                 if _image is not None:
                     N = n%3 # index of card horizontally
@@ -126,7 +133,7 @@ class WorkerThreadPDFExport(QThread):
                     M = n//3 # index of card vertically
                     _y = y+M*card_h # vertical position of current card
                     pdf.image(_image, _x, _y, card_w, card_h)
-                self.signal.emit(10 + (i/(NN-1))*(80-10))
+                self.signal.emit(int(10 + (i/(NN-1))*(80-10)))
             
             pdf.output(save_file, "F")
             
@@ -141,4 +148,4 @@ class WorkerThreadPDFExport(QThread):
             return
 
     def stop(self):
-        self.is_running = False
+        self.requestInterruption()

@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(707, 1000)
+        MainWindow.resize(707, 1006)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_3.sizePolicy().hasHeightForWidth())
         self.frame_3.setSizePolicy(sizePolicy1)
         self.frame_3.setFrameShape(QFrame.StyledPanel)
-        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.frame_3.setFrameShadow(QFrame.Plain)
         self.verticalLayout_10 = QVBoxLayout(self.frame_3)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.AlreadyUsedCardsGroupBox_3 = QGroupBox(self.frame_3)
@@ -61,6 +61,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.SearchCardEdit_3 = QLineEdit(self.SearchCardGroupBox_3)
         self.SearchCardEdit_3.setObjectName(u"SearchCardEdit_3")
+        self.SearchCardEdit_3.setClearButtonEnabled(True)
 
         self.verticalLayout_12.addWidget(self.SearchCardEdit_3)
 
@@ -79,24 +80,34 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.CopyUpButton_3 = QToolButton(self.CopyFromGroupBox_3)
         self.CopyUpButton_3.setObjectName(u"CopyUpButton_3")
+        self.CopyUpButton_3.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_5.addWidget(self.CopyUpButton_3, 0, 1, 1, 1)
 
         self.CopyLeftButton_3 = QToolButton(self.CopyFromGroupBox_3)
         self.CopyLeftButton_3.setObjectName(u"CopyLeftButton_3")
         self.CopyLeftButton_3.setEnabled(False)
+        self.CopyLeftButton_3.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_5.addWidget(self.CopyLeftButton_3, 1, 0, 1, 1)
 
         self.CopyDownButton_3 = QToolButton(self.CopyFromGroupBox_3)
         self.CopyDownButton_3.setObjectName(u"CopyDownButton_3")
+        self.CopyDownButton_3.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_5.addWidget(self.CopyDownButton_3, 2, 1, 1, 1)
 
         self.CopyRightButton_3 = QToolButton(self.CopyFromGroupBox_3)
         self.CopyRightButton_3.setObjectName(u"CopyRightButton_3")
+        self.CopyRightButton_3.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_5.addWidget(self.CopyRightButton_3, 1, 2, 1, 1)
+
+        self.DeleteButton_3 = QToolButton(self.CopyFromGroupBox_3)
+        self.DeleteButton_3.setObjectName(u"DeleteButton_3")
+        self.DeleteButton_3.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_5.addWidget(self.DeleteButton_3, 1, 1, 1, 1)
 
 
         self.verticalLayout_10.addWidget(self.CopyFromGroupBox_3)
@@ -109,7 +120,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_0.sizePolicy().hasHeightForWidth())
         self.frame_0.setSizePolicy(sizePolicy1)
         self.frame_0.setFrameShape(QFrame.StyledPanel)
-        self.frame_0.setFrameShadow(QFrame.Raised)
+        self.frame_0.setFrameShadow(QFrame.Plain)
         self.verticalLayout = QVBoxLayout(self.frame_0)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.AlreadyUsedCardsGroupBox_0 = QGroupBox(self.frame_0)
@@ -132,6 +143,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.SearchCardEdit_0 = QLineEdit(self.SearchCardGroupBox_0)
         self.SearchCardEdit_0.setObjectName(u"SearchCardEdit_0")
+        self.SearchCardEdit_0.setClearButtonEnabled(True)
 
         self.verticalLayout_2.addWidget(self.SearchCardEdit_0)
 
@@ -151,24 +163,34 @@ class Ui_MainWindow(object):
         self.CopyUpButton_0 = QToolButton(self.CopyFromGroupBox_0)
         self.CopyUpButton_0.setObjectName(u"CopyUpButton_0")
         self.CopyUpButton_0.setEnabled(False)
+        self.CopyUpButton_0.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_2.addWidget(self.CopyUpButton_0, 0, 1, 1, 1)
 
         self.CopyLeftButton_0 = QToolButton(self.CopyFromGroupBox_0)
         self.CopyLeftButton_0.setObjectName(u"CopyLeftButton_0")
         self.CopyLeftButton_0.setEnabled(False)
+        self.CopyLeftButton_0.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_2.addWidget(self.CopyLeftButton_0, 1, 0, 1, 1)
 
         self.CopyDownButton_0 = QToolButton(self.CopyFromGroupBox_0)
         self.CopyDownButton_0.setObjectName(u"CopyDownButton_0")
+        self.CopyDownButton_0.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_2.addWidget(self.CopyDownButton_0, 2, 1, 1, 1)
 
         self.CopyRightButton_0 = QToolButton(self.CopyFromGroupBox_0)
         self.CopyRightButton_0.setObjectName(u"CopyRightButton_0")
+        self.CopyRightButton_0.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_2.addWidget(self.CopyRightButton_0, 1, 2, 1, 1)
+
+        self.DeleteButton_0 = QToolButton(self.CopyFromGroupBox_0)
+        self.DeleteButton_0.setObjectName(u"DeleteButton_0")
+        self.DeleteButton_0.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_2.addWidget(self.DeleteButton_0, 1, 1, 1, 1)
 
 
         self.verticalLayout.addWidget(self.CopyFromGroupBox_0)
@@ -181,7 +203,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_1.sizePolicy().hasHeightForWidth())
         self.frame_1.setSizePolicy(sizePolicy1)
         self.frame_1.setFrameShape(QFrame.StyledPanel)
-        self.frame_1.setFrameShadow(QFrame.Raised)
+        self.frame_1.setFrameShadow(QFrame.Plain)
         self.verticalLayout_4 = QVBoxLayout(self.frame_1)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.AlreadyUsedCardsGroupBox_1 = QGroupBox(self.frame_1)
@@ -204,6 +226,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.SearchCardEdit_1 = QLineEdit(self.SearchCardGroupBox_1)
         self.SearchCardEdit_1.setObjectName(u"SearchCardEdit_1")
+        self.SearchCardEdit_1.setClearButtonEnabled(True)
 
         self.verticalLayout_6.addWidget(self.SearchCardEdit_1)
 
@@ -223,23 +246,33 @@ class Ui_MainWindow(object):
         self.CopyUpButton_1 = QToolButton(self.CopyFromGroupBox_1)
         self.CopyUpButton_1.setObjectName(u"CopyUpButton_1")
         self.CopyUpButton_1.setEnabled(False)
+        self.CopyUpButton_1.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_3.addWidget(self.CopyUpButton_1, 0, 1, 1, 1)
 
         self.CopyLeftButton_1 = QToolButton(self.CopyFromGroupBox_1)
         self.CopyLeftButton_1.setObjectName(u"CopyLeftButton_1")
+        self.CopyLeftButton_1.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_3.addWidget(self.CopyLeftButton_1, 1, 0, 1, 1)
 
         self.CopyDownButton_1 = QToolButton(self.CopyFromGroupBox_1)
         self.CopyDownButton_1.setObjectName(u"CopyDownButton_1")
+        self.CopyDownButton_1.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_3.addWidget(self.CopyDownButton_1, 2, 1, 1, 1)
 
         self.CopyRightButton_1 = QToolButton(self.CopyFromGroupBox_1)
         self.CopyRightButton_1.setObjectName(u"CopyRightButton_1")
+        self.CopyRightButton_1.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_3.addWidget(self.CopyRightButton_1, 1, 2, 1, 1)
+
+        self.DeleteButton_1 = QToolButton(self.CopyFromGroupBox_1)
+        self.DeleteButton_1.setObjectName(u"DeleteButton_1")
+        self.DeleteButton_1.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_3.addWidget(self.DeleteButton_1, 1, 1, 1, 1)
 
 
         self.verticalLayout_4.addWidget(self.CopyFromGroupBox_1)
@@ -252,7 +285,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
         self.frame_4.setSizePolicy(sizePolicy1)
         self.frame_4.setFrameShape(QFrame.StyledPanel)
-        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.frame_4.setFrameShadow(QFrame.Plain)
         self.verticalLayout_13 = QVBoxLayout(self.frame_4)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
         self.AlreadyUsedCardsGroupBox_4 = QGroupBox(self.frame_4)
@@ -275,6 +308,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.SearchCardEdit_4 = QLineEdit(self.SearchCardGroupBox_4)
         self.SearchCardEdit_4.setObjectName(u"SearchCardEdit_4")
+        self.SearchCardEdit_4.setClearButtonEnabled(True)
 
         self.verticalLayout_15.addWidget(self.SearchCardEdit_4)
 
@@ -293,23 +327,33 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.CopyUpButton_4 = QToolButton(self.CopyFromGroupBox_4)
         self.CopyUpButton_4.setObjectName(u"CopyUpButton_4")
+        self.CopyUpButton_4.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_6.addWidget(self.CopyUpButton_4, 0, 1, 1, 1)
 
         self.CopyLeftButton_4 = QToolButton(self.CopyFromGroupBox_4)
         self.CopyLeftButton_4.setObjectName(u"CopyLeftButton_4")
+        self.CopyLeftButton_4.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_6.addWidget(self.CopyLeftButton_4, 1, 0, 1, 1)
 
         self.CopyDownButton_4 = QToolButton(self.CopyFromGroupBox_4)
         self.CopyDownButton_4.setObjectName(u"CopyDownButton_4")
+        self.CopyDownButton_4.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_6.addWidget(self.CopyDownButton_4, 2, 1, 1, 1)
 
         self.CopyRightButton_4 = QToolButton(self.CopyFromGroupBox_4)
         self.CopyRightButton_4.setObjectName(u"CopyRightButton_4")
+        self.CopyRightButton_4.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_6.addWidget(self.CopyRightButton_4, 1, 2, 1, 1)
+
+        self.DeleteButton_4 = QToolButton(self.CopyFromGroupBox_4)
+        self.DeleteButton_4.setObjectName(u"DeleteButton_4")
+        self.DeleteButton_4.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_6.addWidget(self.DeleteButton_4, 1, 1, 1, 1)
 
 
         self.verticalLayout_13.addWidget(self.CopyFromGroupBox_4)
@@ -322,7 +366,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
         self.frame_2.setSizePolicy(sizePolicy1)
         self.frame_2.setFrameShape(QFrame.StyledPanel)
-        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.frame_2.setFrameShadow(QFrame.Plain)
         self.verticalLayout_7 = QVBoxLayout(self.frame_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.AlreadyUsedCardsGroupBox_2 = QGroupBox(self.frame_2)
@@ -345,6 +389,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.setObjectName(u"verticalLayout_9")
         self.SearchCardEdit_2 = QLineEdit(self.SearchCardGroupBox_2)
         self.SearchCardEdit_2.setObjectName(u"SearchCardEdit_2")
+        self.SearchCardEdit_2.setClearButtonEnabled(True)
 
         self.verticalLayout_9.addWidget(self.SearchCardEdit_2)
 
@@ -364,24 +409,34 @@ class Ui_MainWindow(object):
         self.CopyUpButton_2 = QToolButton(self.CopyFromGroupBox_2)
         self.CopyUpButton_2.setObjectName(u"CopyUpButton_2")
         self.CopyUpButton_2.setEnabled(False)
+        self.CopyUpButton_2.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_4.addWidget(self.CopyUpButton_2, 0, 1, 1, 1)
 
         self.CopyLeftButton_2 = QToolButton(self.CopyFromGroupBox_2)
         self.CopyLeftButton_2.setObjectName(u"CopyLeftButton_2")
+        self.CopyLeftButton_2.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_4.addWidget(self.CopyLeftButton_2, 1, 0, 1, 1)
 
         self.CopyDownButton_2 = QToolButton(self.CopyFromGroupBox_2)
         self.CopyDownButton_2.setObjectName(u"CopyDownButton_2")
+        self.CopyDownButton_2.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_4.addWidget(self.CopyDownButton_2, 2, 1, 1, 1)
 
         self.CopyRightButton_2 = QToolButton(self.CopyFromGroupBox_2)
         self.CopyRightButton_2.setObjectName(u"CopyRightButton_2")
         self.CopyRightButton_2.setEnabled(False)
+        self.CopyRightButton_2.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_4.addWidget(self.CopyRightButton_2, 1, 2, 1, 1)
+
+        self.DeleteButton_2 = QToolButton(self.CopyFromGroupBox_2)
+        self.DeleteButton_2.setObjectName(u"DeleteButton_2")
+        self.DeleteButton_2.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_4.addWidget(self.DeleteButton_2, 1, 1, 1, 1)
 
 
         self.verticalLayout_7.addWidget(self.CopyFromGroupBox_2)
@@ -394,7 +449,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
         self.frame_5.setSizePolicy(sizePolicy1)
         self.frame_5.setFrameShape(QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Raised)
+        self.frame_5.setFrameShadow(QFrame.Plain)
         self.verticalLayout_16 = QVBoxLayout(self.frame_5)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
         self.AlreadyUsedCardsGroupBox_5 = QGroupBox(self.frame_5)
@@ -417,6 +472,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_18.setObjectName(u"verticalLayout_18")
         self.SearchCardEdit_5 = QLineEdit(self.SearchCardGroupBox_5)
         self.SearchCardEdit_5.setObjectName(u"SearchCardEdit_5")
+        self.SearchCardEdit_5.setClearButtonEnabled(True)
 
         self.verticalLayout_18.addWidget(self.SearchCardEdit_5)
 
@@ -435,24 +491,34 @@ class Ui_MainWindow(object):
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.CopyUpButton_5 = QToolButton(self.CopyFromGroupBox_5)
         self.CopyUpButton_5.setObjectName(u"CopyUpButton_5")
+        self.CopyUpButton_5.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_7.addWidget(self.CopyUpButton_5, 0, 1, 1, 1)
 
         self.CopyLeftButton_5 = QToolButton(self.CopyFromGroupBox_5)
         self.CopyLeftButton_5.setObjectName(u"CopyLeftButton_5")
+        self.CopyLeftButton_5.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_7.addWidget(self.CopyLeftButton_5, 1, 0, 1, 1)
 
         self.CopyDownButton_5 = QToolButton(self.CopyFromGroupBox_5)
         self.CopyDownButton_5.setObjectName(u"CopyDownButton_5")
+        self.CopyDownButton_5.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_7.addWidget(self.CopyDownButton_5, 2, 1, 1, 1)
 
         self.CopyRightButton_5 = QToolButton(self.CopyFromGroupBox_5)
         self.CopyRightButton_5.setObjectName(u"CopyRightButton_5")
         self.CopyRightButton_5.setEnabled(False)
+        self.CopyRightButton_5.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_7.addWidget(self.CopyRightButton_5, 1, 2, 1, 1)
+
+        self.DeleteButton_5 = QToolButton(self.CopyFromGroupBox_5)
+        self.DeleteButton_5.setObjectName(u"DeleteButton_5")
+        self.DeleteButton_5.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_7.addWidget(self.DeleteButton_5, 1, 1, 1, 1)
 
 
         self.verticalLayout_16.addWidget(self.CopyFromGroupBox_5)
@@ -465,7 +531,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
         self.frame_6.setSizePolicy(sizePolicy1)
         self.frame_6.setFrameShape(QFrame.StyledPanel)
-        self.frame_6.setFrameShadow(QFrame.Raised)
+        self.frame_6.setFrameShadow(QFrame.Plain)
         self.verticalLayout_19 = QVBoxLayout(self.frame_6)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
         self.AlreadyUsedCardsGroupBox_6 = QGroupBox(self.frame_6)
@@ -488,6 +554,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_21.setObjectName(u"verticalLayout_21")
         self.SearchCardEdit_6 = QLineEdit(self.SearchCardGroupBox_6)
         self.SearchCardEdit_6.setObjectName(u"SearchCardEdit_6")
+        self.SearchCardEdit_6.setClearButtonEnabled(True)
 
         self.verticalLayout_21.addWidget(self.SearchCardEdit_6)
 
@@ -506,25 +573,35 @@ class Ui_MainWindow(object):
         self.gridLayout_8.setObjectName(u"gridLayout_8")
         self.CopyUpButton_6 = QToolButton(self.CopyFromGroupBox_6)
         self.CopyUpButton_6.setObjectName(u"CopyUpButton_6")
+        self.CopyUpButton_6.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_8.addWidget(self.CopyUpButton_6, 0, 1, 1, 1)
 
         self.CopyLeftButton_6 = QToolButton(self.CopyFromGroupBox_6)
         self.CopyLeftButton_6.setObjectName(u"CopyLeftButton_6")
         self.CopyLeftButton_6.setEnabled(False)
+        self.CopyLeftButton_6.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_8.addWidget(self.CopyLeftButton_6, 1, 0, 1, 1)
 
         self.CopyDownButton_6 = QToolButton(self.CopyFromGroupBox_6)
         self.CopyDownButton_6.setObjectName(u"CopyDownButton_6")
         self.CopyDownButton_6.setEnabled(False)
+        self.CopyDownButton_6.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_8.addWidget(self.CopyDownButton_6, 2, 1, 1, 1)
 
         self.CopyRightButton_6 = QToolButton(self.CopyFromGroupBox_6)
         self.CopyRightButton_6.setObjectName(u"CopyRightButton_6")
+        self.CopyRightButton_6.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_8.addWidget(self.CopyRightButton_6, 1, 2, 1, 1)
+
+        self.DeleteButton_6 = QToolButton(self.CopyFromGroupBox_6)
+        self.DeleteButton_6.setObjectName(u"DeleteButton_6")
+        self.DeleteButton_6.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_8.addWidget(self.DeleteButton_6, 1, 1, 1, 1)
 
 
         self.verticalLayout_19.addWidget(self.CopyFromGroupBox_6)
@@ -537,7 +614,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
         self.frame_7.setSizePolicy(sizePolicy1)
         self.frame_7.setFrameShape(QFrame.StyledPanel)
-        self.frame_7.setFrameShadow(QFrame.Raised)
+        self.frame_7.setFrameShadow(QFrame.Plain)
         self.verticalLayout_22 = QVBoxLayout(self.frame_7)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
         self.AlreadyUsedCardsGroupBox_7 = QGroupBox(self.frame_7)
@@ -560,6 +637,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.setObjectName(u"verticalLayout_24")
         self.SearchCardEdit_7 = QLineEdit(self.SearchCardGroupBox_7)
         self.SearchCardEdit_7.setObjectName(u"SearchCardEdit_7")
+        self.SearchCardEdit_7.setClearButtonEnabled(True)
 
         self.verticalLayout_24.addWidget(self.SearchCardEdit_7)
 
@@ -578,24 +656,34 @@ class Ui_MainWindow(object):
         self.gridLayout_9.setObjectName(u"gridLayout_9")
         self.CopyUpButton_7 = QToolButton(self.CopyFromGroupBox_7)
         self.CopyUpButton_7.setObjectName(u"CopyUpButton_7")
+        self.CopyUpButton_7.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_9.addWidget(self.CopyUpButton_7, 0, 1, 1, 1)
 
         self.CopyLeftButton_7 = QToolButton(self.CopyFromGroupBox_7)
         self.CopyLeftButton_7.setObjectName(u"CopyLeftButton_7")
+        self.CopyLeftButton_7.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_9.addWidget(self.CopyLeftButton_7, 1, 0, 1, 1)
 
         self.CopyDownButton_7 = QToolButton(self.CopyFromGroupBox_7)
         self.CopyDownButton_7.setObjectName(u"CopyDownButton_7")
         self.CopyDownButton_7.setEnabled(False)
+        self.CopyDownButton_7.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_9.addWidget(self.CopyDownButton_7, 2, 1, 1, 1)
 
         self.CopyRightButton_7 = QToolButton(self.CopyFromGroupBox_7)
         self.CopyRightButton_7.setObjectName(u"CopyRightButton_7")
+        self.CopyRightButton_7.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_9.addWidget(self.CopyRightButton_7, 1, 2, 1, 1)
+
+        self.DeleteButton_7 = QToolButton(self.CopyFromGroupBox_7)
+        self.DeleteButton_7.setObjectName(u"DeleteButton_7")
+        self.DeleteButton_7.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_9.addWidget(self.DeleteButton_7, 1, 1, 1, 1)
 
 
         self.verticalLayout_22.addWidget(self.CopyFromGroupBox_7)
@@ -608,7 +696,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
         self.frame_8.setSizePolicy(sizePolicy1)
         self.frame_8.setFrameShape(QFrame.StyledPanel)
-        self.frame_8.setFrameShadow(QFrame.Raised)
+        self.frame_8.setFrameShadow(QFrame.Plain)
         self.verticalLayout_25 = QVBoxLayout(self.frame_8)
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
         self.AlreadyUsedCardsGroupBox_8 = QGroupBox(self.frame_8)
@@ -631,6 +719,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_27.setObjectName(u"verticalLayout_27")
         self.SearchCardEdit_8 = QLineEdit(self.SearchCardGroupBox_8)
         self.SearchCardEdit_8.setObjectName(u"SearchCardEdit_8")
+        self.SearchCardEdit_8.setClearButtonEnabled(True)
 
         self.verticalLayout_27.addWidget(self.SearchCardEdit_8)
 
@@ -649,25 +738,35 @@ class Ui_MainWindow(object):
         self.gridLayout_10.setObjectName(u"gridLayout_10")
         self.CopyUpButton_8 = QToolButton(self.CopyFromGroupBox_8)
         self.CopyUpButton_8.setObjectName(u"CopyUpButton_8")
+        self.CopyUpButton_8.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_10.addWidget(self.CopyUpButton_8, 0, 1, 1, 1)
 
         self.CopyLeftButton_8 = QToolButton(self.CopyFromGroupBox_8)
         self.CopyLeftButton_8.setObjectName(u"CopyLeftButton_8")
+        self.CopyLeftButton_8.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_10.addWidget(self.CopyLeftButton_8, 1, 0, 1, 1)
 
         self.CopyDownButton_8 = QToolButton(self.CopyFromGroupBox_8)
         self.CopyDownButton_8.setObjectName(u"CopyDownButton_8")
         self.CopyDownButton_8.setEnabled(False)
+        self.CopyDownButton_8.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_10.addWidget(self.CopyDownButton_8, 2, 1, 1, 1)
 
         self.CopyRightButton_8 = QToolButton(self.CopyFromGroupBox_8)
         self.CopyRightButton_8.setObjectName(u"CopyRightButton_8")
         self.CopyRightButton_8.setEnabled(False)
+        self.CopyRightButton_8.setMinimumSize(QSize(30, 25))
 
         self.gridLayout_10.addWidget(self.CopyRightButton_8, 1, 2, 1, 1)
+
+        self.DeleteButton_8 = QToolButton(self.CopyFromGroupBox_8)
+        self.DeleteButton_8.setObjectName(u"DeleteButton_8")
+        self.DeleteButton_8.setMinimumSize(QSize(30, 25))
+
+        self.gridLayout_10.addWidget(self.DeleteButton_8, 1, 1, 1, 1)
 
 
         self.verticalLayout_25.addWidget(self.CopyFromGroupBox_8)
@@ -699,6 +798,79 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.GetImagesButton, 3, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
+        QWidget.setTabOrder(self.SearchCardEdit_0, self.SearchCardEdit_1)
+        QWidget.setTabOrder(self.SearchCardEdit_1, self.SearchCardEdit_2)
+        QWidget.setTabOrder(self.SearchCardEdit_2, self.SearchCardEdit_3)
+        QWidget.setTabOrder(self.SearchCardEdit_3, self.SearchCardEdit_4)
+        QWidget.setTabOrder(self.SearchCardEdit_4, self.SearchCardEdit_5)
+        QWidget.setTabOrder(self.SearchCardEdit_5, self.SearchCardEdit_6)
+        QWidget.setTabOrder(self.SearchCardEdit_6, self.SearchCardEdit_7)
+        QWidget.setTabOrder(self.SearchCardEdit_7, self.SearchCardEdit_8)
+        QWidget.setTabOrder(self.SearchCardEdit_8, self.SearchCardCombo_0)
+        QWidget.setTabOrder(self.SearchCardCombo_0, self.SearchCardCombo_1)
+        QWidget.setTabOrder(self.SearchCardCombo_1, self.SearchCardCombo_2)
+        QWidget.setTabOrder(self.SearchCardCombo_2, self.SearchCardCombo_3)
+        QWidget.setTabOrder(self.SearchCardCombo_3, self.SearchCardCombo_4)
+        QWidget.setTabOrder(self.SearchCardCombo_4, self.SearchCardCombo_5)
+        QWidget.setTabOrder(self.SearchCardCombo_5, self.SearchCardCombo_6)
+        QWidget.setTabOrder(self.SearchCardCombo_6, self.SearchCardCombo_7)
+        QWidget.setTabOrder(self.SearchCardCombo_7, self.SearchCardCombo_8)
+        QWidget.setTabOrder(self.SearchCardCombo_8, self.GetImagesButton)
+        QWidget.setTabOrder(self.GetImagesButton, self.ExportPDFButton)
+        QWidget.setTabOrder(self.ExportPDFButton, self.CopyUpButton_0)
+        QWidget.setTabOrder(self.CopyUpButton_0, self.CopyLeftButton_0)
+        QWidget.setTabOrder(self.CopyLeftButton_0, self.DeleteButton_0)
+        QWidget.setTabOrder(self.DeleteButton_0, self.CopyRightButton_0)
+        QWidget.setTabOrder(self.CopyRightButton_0, self.CopyDownButton_0)
+        QWidget.setTabOrder(self.CopyDownButton_0, self.CopyUpButton_1)
+        QWidget.setTabOrder(self.CopyUpButton_1, self.CopyLeftButton_1)
+        QWidget.setTabOrder(self.CopyLeftButton_1, self.DeleteButton_1)
+        QWidget.setTabOrder(self.DeleteButton_1, self.CopyRightButton_1)
+        QWidget.setTabOrder(self.CopyRightButton_1, self.CopyDownButton_1)
+        QWidget.setTabOrder(self.CopyDownButton_1, self.CopyUpButton_2)
+        QWidget.setTabOrder(self.CopyUpButton_2, self.CopyLeftButton_2)
+        QWidget.setTabOrder(self.CopyLeftButton_2, self.DeleteButton_2)
+        QWidget.setTabOrder(self.DeleteButton_2, self.CopyRightButton_2)
+        QWidget.setTabOrder(self.CopyRightButton_2, self.CopyDownButton_2)
+        QWidget.setTabOrder(self.CopyDownButton_2, self.CopyUpButton_3)
+        QWidget.setTabOrder(self.CopyUpButton_3, self.CopyLeftButton_3)
+        QWidget.setTabOrder(self.CopyLeftButton_3, self.DeleteButton_3)
+        QWidget.setTabOrder(self.DeleteButton_3, self.CopyRightButton_3)
+        QWidget.setTabOrder(self.CopyRightButton_3, self.CopyDownButton_3)
+        QWidget.setTabOrder(self.CopyDownButton_3, self.CopyUpButton_4)
+        QWidget.setTabOrder(self.CopyUpButton_4, self.CopyLeftButton_4)
+        QWidget.setTabOrder(self.CopyLeftButton_4, self.DeleteButton_4)
+        QWidget.setTabOrder(self.DeleteButton_4, self.CopyRightButton_4)
+        QWidget.setTabOrder(self.CopyRightButton_4, self.CopyDownButton_4)
+        QWidget.setTabOrder(self.CopyDownButton_4, self.CopyUpButton_5)
+        QWidget.setTabOrder(self.CopyUpButton_5, self.CopyLeftButton_5)
+        QWidget.setTabOrder(self.CopyLeftButton_5, self.DeleteButton_5)
+        QWidget.setTabOrder(self.DeleteButton_5, self.CopyRightButton_5)
+        QWidget.setTabOrder(self.CopyRightButton_5, self.CopyDownButton_5)
+        QWidget.setTabOrder(self.CopyDownButton_5, self.CopyUpButton_6)
+        QWidget.setTabOrder(self.CopyUpButton_6, self.CopyLeftButton_6)
+        QWidget.setTabOrder(self.CopyLeftButton_6, self.DeleteButton_6)
+        QWidget.setTabOrder(self.DeleteButton_6, self.CopyRightButton_6)
+        QWidget.setTabOrder(self.CopyRightButton_6, self.CopyDownButton_6)
+        QWidget.setTabOrder(self.CopyDownButton_6, self.CopyUpButton_7)
+        QWidget.setTabOrder(self.CopyUpButton_7, self.CopyLeftButton_7)
+        QWidget.setTabOrder(self.CopyLeftButton_7, self.DeleteButton_7)
+        QWidget.setTabOrder(self.DeleteButton_7, self.CopyRightButton_7)
+        QWidget.setTabOrder(self.CopyRightButton_7, self.CopyDownButton_7)
+        QWidget.setTabOrder(self.CopyDownButton_7, self.CopyUpButton_8)
+        QWidget.setTabOrder(self.CopyUpButton_8, self.CopyLeftButton_8)
+        QWidget.setTabOrder(self.CopyLeftButton_8, self.DeleteButton_8)
+        QWidget.setTabOrder(self.DeleteButton_8, self.CopyRightButton_8)
+        QWidget.setTabOrder(self.CopyRightButton_8, self.CopyDownButton_8)
+        QWidget.setTabOrder(self.CopyDownButton_8, self.AlreadyUsedCardsCombo_0)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_0, self.AlreadyUsedCardsCombo_1)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_1, self.AlreadyUsedCardsCombo_2)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_2, self.AlreadyUsedCardsCombo_3)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_3, self.AlreadyUsedCardsCombo_4)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_4, self.AlreadyUsedCardsCombo_5)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_5, self.AlreadyUsedCardsCombo_6)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_6, self.AlreadyUsedCardsCombo_7)
+        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_7, self.AlreadyUsedCardsCombo_8)
 
         self.retranslateUi(MainWindow)
 
@@ -710,75 +882,84 @@ class Ui_MainWindow(object):
         self.AlreadyUsedCardsGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_3.setText("")
         self.AlreadyUsedCardsGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_0.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_0.setText("")
         self.AlreadyUsedCardsGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_1.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_1.setText("")
         self.AlreadyUsedCardsGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_4.setText("")
         self.AlreadyUsedCardsGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_2.setText("")
         self.AlreadyUsedCardsGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_5.setText("")
         self.AlreadyUsedCardsGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_6.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_6.setText("")
         self.AlreadyUsedCardsGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_7.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_7.setText("")
         self.AlreadyUsedCardsGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_8.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
-        self.CopyFromGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Copy from...", None))
+        self.CopyFromGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
         self.CopyUpButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2191", None))
         self.CopyLeftButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2190", None))
         self.CopyDownButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
+        self.DeleteButton_8.setText("")
         self.ExportPDFButton.setText(QCoreApplication.translate("MainWindow", u"Export to PDF", None))
         self.GetImagesButton.setText(QCoreApplication.translate("MainWindow", u"Get images", None))
     # retranslateUi

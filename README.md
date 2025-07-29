@@ -21,3 +21,9 @@ pip install -r requirements.txt
 ```powershell
 python YGOProxyPrinter_UI.py
 ```
+
+## Build executable for your system
+You may use `auto-py-to-exe` or `PyInstaller` to build an executable for your system; an example command which produced a working executable could be:
+```powershell
+pyinstaller --noconfirm --onefile --windowed --icon "path\to\YGOProxyPrinter\img\logo-96.ico" --add-data "path\to\YGOProxyPrinter\img;img/"  "path\to\YGOProxyPrinter\YGOProxyPrinter_UI.py"
+```
