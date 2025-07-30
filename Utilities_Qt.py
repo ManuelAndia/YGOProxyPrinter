@@ -5,7 +5,7 @@ Created on Sun Jul 27 18:44:05 2025
 @author: Eukerion
 """
 
-import traceback, pickle, sys, subprocess
+import traceback, pickle, sys, subprocess, os
 from time import strftime
 
 from PyQt5 import QtWidgets, QtGui
@@ -14,6 +14,15 @@ from PyQt5.QtCore import pyqtSignal, QObject, Qt
 # =============================================================================
 # Definitions - functions and decorators
 # =============================================================================
+def resource_path(relative):
+    """Get absolute path to the resource -- ABSOLUTELY NEEDED for compiling
+    with PyInstaller!"""
+    if hasattr(sys, "_MEIPASS"):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative)
+
 def open_explorer(location, reveal=True):
     """Opens file explorer at location provided. If location is file and reveal is True,
     highlights the file in explorer (ONLY WINDOWS AND MACOS)."""
@@ -148,6 +157,42 @@ def report_exceptions(f):
 # =============================================================================
 # Definitions - classes
 # =============================================================================
+class StopButton(object):
+    def __init__(self, button, stop_text="STOP", stop_stylesheet="color:red;"):
+        self.button = button
+        self.initial_text = button.text()
+        self.initial_styleSheet = button.styleSheet()
+        self.initial_state = button.isEnabled()
+        self.stop_text = stop_text
+        self.stop_stylesheet = stop_stylesheet
+    
+    @property
+    def state(self):
+        return self.button.isEnabled()
+    
+    def setEnabled(self, state):
+        return self.button.setEnabled(state)
+    
+    def setText(self, text):
+        return self.button.setText(text)
+    
+    def setStyleSheet(self, sheet):
+        return self.button.setStyleSheet(sheet)
+    
+    def toggle(self, state="start"):
+        if state=="start": # this means that the thread has started and the stop button should display the stop message
+            self.setEnabled(True)
+            self.setText(self.stop_text)
+            self.setStyleSheet(self.stop_stylesheet)
+        elif state=="stopping":
+            self.setEnabled(False)
+            self.setText(self.initial_text)
+            self.setStyleSheet(self.initial_styleSheet)
+        elif state=="stop":
+            self.setEnabled(self.initial_state)
+            self.setText(self.initial_text)
+            self.setStyleSheet(self.initial_styleSheet)
+
 class EmittingStream(QObject):
 
     textWritten = pyqtSignal(str)

@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(707, 1006)
+        MainWindow.resize(707, 1000)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -38,24 +38,11 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShadow(QFrame.Plain)
         self.verticalLayout_10 = QVBoxLayout(self.frame_3)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
-        self.AlreadyUsedCardsGroupBox_3 = QGroupBox(self.frame_3)
-        self.AlreadyUsedCardsGroupBox_3.setObjectName(u"AlreadyUsedCardsGroupBox_3")
+        self.SearchCardGroupBox_3 = QGroupBox(self.frame_3)
+        self.SearchCardGroupBox_3.setObjectName(u"SearchCardGroupBox_3")
         font = QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.AlreadyUsedCardsGroupBox_3.setFont(font)
-        self.verticalLayout_11 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_3)
-        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.AlreadyUsedCardsCombo_3 = QComboBox(self.AlreadyUsedCardsGroupBox_3)
-        self.AlreadyUsedCardsCombo_3.setObjectName(u"AlreadyUsedCardsCombo_3")
-
-        self.verticalLayout_11.addWidget(self.AlreadyUsedCardsCombo_3)
-
-
-        self.verticalLayout_10.addWidget(self.AlreadyUsedCardsGroupBox_3)
-
-        self.SearchCardGroupBox_3 = QGroupBox(self.frame_3)
-        self.SearchCardGroupBox_3.setObjectName(u"SearchCardGroupBox_3")
         self.SearchCardGroupBox_3.setFont(font)
         self.verticalLayout_12 = QVBoxLayout(self.SearchCardGroupBox_3)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
@@ -123,19 +110,6 @@ class Ui_MainWindow(object):
         self.frame_0.setFrameShadow(QFrame.Plain)
         self.verticalLayout = QVBoxLayout(self.frame_0)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.AlreadyUsedCardsGroupBox_0 = QGroupBox(self.frame_0)
-        self.AlreadyUsedCardsGroupBox_0.setObjectName(u"AlreadyUsedCardsGroupBox_0")
-        self.AlreadyUsedCardsGroupBox_0.setFont(font)
-        self.verticalLayout_3 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_0)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.AlreadyUsedCardsCombo_0 = QComboBox(self.AlreadyUsedCardsGroupBox_0)
-        self.AlreadyUsedCardsCombo_0.setObjectName(u"AlreadyUsedCardsCombo_0")
-
-        self.verticalLayout_3.addWidget(self.AlreadyUsedCardsCombo_0)
-
-
-        self.verticalLayout.addWidget(self.AlreadyUsedCardsGroupBox_0)
-
         self.SearchCardGroupBox_0 = QGroupBox(self.frame_0)
         self.SearchCardGroupBox_0.setObjectName(u"SearchCardGroupBox_0")
         self.SearchCardGroupBox_0.setFont(font)
@@ -206,19 +180,6 @@ class Ui_MainWindow(object):
         self.frame_1.setFrameShadow(QFrame.Plain)
         self.verticalLayout_4 = QVBoxLayout(self.frame_1)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.AlreadyUsedCardsGroupBox_1 = QGroupBox(self.frame_1)
-        self.AlreadyUsedCardsGroupBox_1.setObjectName(u"AlreadyUsedCardsGroupBox_1")
-        self.AlreadyUsedCardsGroupBox_1.setFont(font)
-        self.verticalLayout_5 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_1)
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.AlreadyUsedCardsCombo_1 = QComboBox(self.AlreadyUsedCardsGroupBox_1)
-        self.AlreadyUsedCardsCombo_1.setObjectName(u"AlreadyUsedCardsCombo_1")
-
-        self.verticalLayout_5.addWidget(self.AlreadyUsedCardsCombo_1)
-
-
-        self.verticalLayout_4.addWidget(self.AlreadyUsedCardsGroupBox_1)
-
         self.SearchCardGroupBox_1 = QGroupBox(self.frame_1)
         self.SearchCardGroupBox_1.setObjectName(u"SearchCardGroupBox_1")
         self.SearchCardGroupBox_1.setFont(font)
@@ -288,19 +249,6 @@ class Ui_MainWindow(object):
         self.frame_4.setFrameShadow(QFrame.Plain)
         self.verticalLayout_13 = QVBoxLayout(self.frame_4)
         self.verticalLayout_13.setObjectName(u"verticalLayout_13")
-        self.AlreadyUsedCardsGroupBox_4 = QGroupBox(self.frame_4)
-        self.AlreadyUsedCardsGroupBox_4.setObjectName(u"AlreadyUsedCardsGroupBox_4")
-        self.AlreadyUsedCardsGroupBox_4.setFont(font)
-        self.verticalLayout_14 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_4)
-        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.AlreadyUsedCardsCombo_4 = QComboBox(self.AlreadyUsedCardsGroupBox_4)
-        self.AlreadyUsedCardsCombo_4.setObjectName(u"AlreadyUsedCardsCombo_4")
-
-        self.verticalLayout_14.addWidget(self.AlreadyUsedCardsCombo_4)
-
-
-        self.verticalLayout_13.addWidget(self.AlreadyUsedCardsGroupBox_4)
-
         self.SearchCardGroupBox_4 = QGroupBox(self.frame_4)
         self.SearchCardGroupBox_4.setObjectName(u"SearchCardGroupBox_4")
         self.SearchCardGroupBox_4.setFont(font)
@@ -369,19 +317,6 @@ class Ui_MainWindow(object):
         self.frame_2.setFrameShadow(QFrame.Plain)
         self.verticalLayout_7 = QVBoxLayout(self.frame_2)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.AlreadyUsedCardsGroupBox_2 = QGroupBox(self.frame_2)
-        self.AlreadyUsedCardsGroupBox_2.setObjectName(u"AlreadyUsedCardsGroupBox_2")
-        self.AlreadyUsedCardsGroupBox_2.setFont(font)
-        self.verticalLayout_8 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_2)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.AlreadyUsedCardsCombo_2 = QComboBox(self.AlreadyUsedCardsGroupBox_2)
-        self.AlreadyUsedCardsCombo_2.setObjectName(u"AlreadyUsedCardsCombo_2")
-
-        self.verticalLayout_8.addWidget(self.AlreadyUsedCardsCombo_2)
-
-
-        self.verticalLayout_7.addWidget(self.AlreadyUsedCardsGroupBox_2)
-
         self.SearchCardGroupBox_2 = QGroupBox(self.frame_2)
         self.SearchCardGroupBox_2.setObjectName(u"SearchCardGroupBox_2")
         self.SearchCardGroupBox_2.setFont(font)
@@ -452,19 +387,6 @@ class Ui_MainWindow(object):
         self.frame_5.setFrameShadow(QFrame.Plain)
         self.verticalLayout_16 = QVBoxLayout(self.frame_5)
         self.verticalLayout_16.setObjectName(u"verticalLayout_16")
-        self.AlreadyUsedCardsGroupBox_5 = QGroupBox(self.frame_5)
-        self.AlreadyUsedCardsGroupBox_5.setObjectName(u"AlreadyUsedCardsGroupBox_5")
-        self.AlreadyUsedCardsGroupBox_5.setFont(font)
-        self.verticalLayout_17 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_5)
-        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
-        self.AlreadyUsedCardsCombo_5 = QComboBox(self.AlreadyUsedCardsGroupBox_5)
-        self.AlreadyUsedCardsCombo_5.setObjectName(u"AlreadyUsedCardsCombo_5")
-
-        self.verticalLayout_17.addWidget(self.AlreadyUsedCardsCombo_5)
-
-
-        self.verticalLayout_16.addWidget(self.AlreadyUsedCardsGroupBox_5)
-
         self.SearchCardGroupBox_5 = QGroupBox(self.frame_5)
         self.SearchCardGroupBox_5.setObjectName(u"SearchCardGroupBox_5")
         self.SearchCardGroupBox_5.setFont(font)
@@ -534,19 +456,6 @@ class Ui_MainWindow(object):
         self.frame_6.setFrameShadow(QFrame.Plain)
         self.verticalLayout_19 = QVBoxLayout(self.frame_6)
         self.verticalLayout_19.setObjectName(u"verticalLayout_19")
-        self.AlreadyUsedCardsGroupBox_6 = QGroupBox(self.frame_6)
-        self.AlreadyUsedCardsGroupBox_6.setObjectName(u"AlreadyUsedCardsGroupBox_6")
-        self.AlreadyUsedCardsGroupBox_6.setFont(font)
-        self.verticalLayout_20 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_6)
-        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
-        self.AlreadyUsedCardsCombo_6 = QComboBox(self.AlreadyUsedCardsGroupBox_6)
-        self.AlreadyUsedCardsCombo_6.setObjectName(u"AlreadyUsedCardsCombo_6")
-
-        self.verticalLayout_20.addWidget(self.AlreadyUsedCardsCombo_6)
-
-
-        self.verticalLayout_19.addWidget(self.AlreadyUsedCardsGroupBox_6)
-
         self.SearchCardGroupBox_6 = QGroupBox(self.frame_6)
         self.SearchCardGroupBox_6.setObjectName(u"SearchCardGroupBox_6")
         self.SearchCardGroupBox_6.setFont(font)
@@ -617,19 +526,6 @@ class Ui_MainWindow(object):
         self.frame_7.setFrameShadow(QFrame.Plain)
         self.verticalLayout_22 = QVBoxLayout(self.frame_7)
         self.verticalLayout_22.setObjectName(u"verticalLayout_22")
-        self.AlreadyUsedCardsGroupBox_7 = QGroupBox(self.frame_7)
-        self.AlreadyUsedCardsGroupBox_7.setObjectName(u"AlreadyUsedCardsGroupBox_7")
-        self.AlreadyUsedCardsGroupBox_7.setFont(font)
-        self.verticalLayout_23 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_7)
-        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
-        self.AlreadyUsedCardsCombo_7 = QComboBox(self.AlreadyUsedCardsGroupBox_7)
-        self.AlreadyUsedCardsCombo_7.setObjectName(u"AlreadyUsedCardsCombo_7")
-
-        self.verticalLayout_23.addWidget(self.AlreadyUsedCardsCombo_7)
-
-
-        self.verticalLayout_22.addWidget(self.AlreadyUsedCardsGroupBox_7)
-
         self.SearchCardGroupBox_7 = QGroupBox(self.frame_7)
         self.SearchCardGroupBox_7.setObjectName(u"SearchCardGroupBox_7")
         self.SearchCardGroupBox_7.setFont(font)
@@ -699,19 +595,6 @@ class Ui_MainWindow(object):
         self.frame_8.setFrameShadow(QFrame.Plain)
         self.verticalLayout_25 = QVBoxLayout(self.frame_8)
         self.verticalLayout_25.setObjectName(u"verticalLayout_25")
-        self.AlreadyUsedCardsGroupBox_8 = QGroupBox(self.frame_8)
-        self.AlreadyUsedCardsGroupBox_8.setObjectName(u"AlreadyUsedCardsGroupBox_8")
-        self.AlreadyUsedCardsGroupBox_8.setFont(font)
-        self.verticalLayout_26 = QVBoxLayout(self.AlreadyUsedCardsGroupBox_8)
-        self.verticalLayout_26.setObjectName(u"verticalLayout_26")
-        self.AlreadyUsedCardsCombo_8 = QComboBox(self.AlreadyUsedCardsGroupBox_8)
-        self.AlreadyUsedCardsCombo_8.setObjectName(u"AlreadyUsedCardsCombo_8")
-
-        self.verticalLayout_26.addWidget(self.AlreadyUsedCardsCombo_8)
-
-
-        self.verticalLayout_25.addWidget(self.AlreadyUsedCardsGroupBox_8)
-
         self.SearchCardGroupBox_8 = QGroupBox(self.frame_8)
         self.SearchCardGroupBox_8.setObjectName(u"SearchCardGroupBox_8")
         self.SearchCardGroupBox_8.setFont(font)
@@ -774,28 +657,32 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.frame_8, 2, 3, 1, 1)
 
-        self.ExportPDFButton = QPushButton(self.centralwidget)
-        self.ExportPDFButton.setObjectName(u"ExportPDFButton")
-        font1 = QFont()
-        font1.setPointSize(10)
-        font1.setBold(False)
-        font1.setWeight(50)
-        self.ExportPDFButton.setFont(font1)
-        self.ExportPDFButton.setStyleSheet(u"color: rgba(10, 150, 10, 255);")
-
-        self.gridLayout.addWidget(self.ExportPDFButton, 3, 3, 1, 1)
-
         self.progressBar = QProgressBar(self.centralwidget)
         self.progressBar.setObjectName(u"progressBar")
         self.progressBar.setValue(0)
 
-        self.gridLayout.addWidget(self.progressBar, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.progressBar, 4, 1, 1, 1)
 
         self.GetImagesButton = QPushButton(self.centralwidget)
         self.GetImagesButton.setObjectName(u"GetImagesButton")
+        font1 = QFont()
+        font1.setPointSize(10)
+        font1.setBold(False)
+        font1.setWeight(50)
         self.GetImagesButton.setFont(font1)
 
-        self.gridLayout.addWidget(self.GetImagesButton, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.GetImagesButton, 4, 0, 1, 1)
+
+        self.ExportPDFButton = QPushButton(self.centralwidget)
+        self.ExportPDFButton.setObjectName(u"ExportPDFButton")
+        self.ExportPDFButton.setFont(font1)
+        self.ExportPDFButton.setStyleSheet(u"color: rgba(10, 150, 10, 255);")
+
+        self.gridLayout.addWidget(self.ExportPDFButton, 4, 3, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout.addItem(self.verticalSpacer, 3, 1, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         QWidget.setTabOrder(self.SearchCardEdit_0, self.SearchCardEdit_1)
@@ -862,15 +749,6 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.CopyLeftButton_8, self.DeleteButton_8)
         QWidget.setTabOrder(self.DeleteButton_8, self.CopyRightButton_8)
         QWidget.setTabOrder(self.CopyRightButton_8, self.CopyDownButton_8)
-        QWidget.setTabOrder(self.CopyDownButton_8, self.AlreadyUsedCardsCombo_0)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_0, self.AlreadyUsedCardsCombo_1)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_1, self.AlreadyUsedCardsCombo_2)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_2, self.AlreadyUsedCardsCombo_3)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_3, self.AlreadyUsedCardsCombo_4)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_4, self.AlreadyUsedCardsCombo_5)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_5, self.AlreadyUsedCardsCombo_6)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_6, self.AlreadyUsedCardsCombo_7)
-        QWidget.setTabOrder(self.AlreadyUsedCardsCombo_7, self.AlreadyUsedCardsCombo_8)
 
         self.retranslateUi(MainWindow)
 
@@ -879,7 +757,6 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"YGOProxyPrinter", None))
-        self.AlreadyUsedCardsGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_3.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -888,7 +765,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_3.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_3.setText("")
-        self.AlreadyUsedCardsGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_0.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_0.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -897,7 +773,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_0.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_0.setText("")
-        self.AlreadyUsedCardsGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_1.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_1.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -906,7 +781,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_1.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_1.setText("")
-        self.AlreadyUsedCardsGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_4.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -915,7 +789,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_4.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_4.setText("")
-        self.AlreadyUsedCardsGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_2.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -924,7 +797,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_2.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_2.setText("")
-        self.AlreadyUsedCardsGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_5.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_5.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -933,7 +805,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_5.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_5.setText("")
-        self.AlreadyUsedCardsGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_6.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -942,7 +813,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_6.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_6.setText("")
-        self.AlreadyUsedCardsGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_7.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_7.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -951,7 +821,6 @@ class Ui_MainWindow(object):
         self.CopyDownButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_7.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_7.setText("")
-        self.AlreadyUsedCardsGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Already-used cards", None))
         self.SearchCardGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Search by card name", None))
         self.SearchCardEdit_8.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Search card name...", None))
         self.CopyFromGroupBox_8.setTitle(QCoreApplication.translate("MainWindow", u"Copy from / delete", None))
@@ -960,7 +829,7 @@ class Ui_MainWindow(object):
         self.CopyDownButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2193", None))
         self.CopyRightButton_8.setText(QCoreApplication.translate("MainWindow", u"\u2192", None))
         self.DeleteButton_8.setText("")
-        self.ExportPDFButton.setText(QCoreApplication.translate("MainWindow", u"Export to PDF", None))
         self.GetImagesButton.setText(QCoreApplication.translate("MainWindow", u"Get images", None))
+        self.ExportPDFButton.setText(QCoreApplication.translate("MainWindow", u"Export to PDF", None))
     # retranslateUi
 

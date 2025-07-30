@@ -4,10 +4,10 @@
 # Imports
 # =============================================================================
 from PyQt5 import QtWidgets, QtGui, QtCore
-from matplotlib.backends.backend_qt5agg import (
-    FigureCanvasQTAgg as FigureCanvas,
-    NavigationToolbar2QT as NavigationToolbar)
-import matplotlib.pyplot as plt, numpy as np
+# from matplotlib.backends.backend_qt5agg import (
+#     FigureCanvasQTAgg as FigureCanvas,
+#     NavigationToolbar2QT as NavigationToolbar)
+#import matplotlib.pyplot as plt, numpy as np
 
 import sys, os
 
@@ -16,7 +16,7 @@ from ui_mainwindow import Ui_MainWindow
 from WorkerThreadClasses import WorkerThreadPDFExport, WorkerThreadCardSearch, WorkerThreadCardImagePull
 
 from Utilities_Qt import show_error, show_dialog, Parameters, show_save_confirmation, \
-                         open_explorer, delete_child_widgets_from_layout, report_exceptions
+                         open_explorer, report_exceptions, resource_path, StopButton
 
 from YGOCardTools import CardList
 
@@ -24,8 +24,8 @@ from YGOCardTools import CardList
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.1"
-BUILD_DATE = "2025_07_29"
+VERSION = "0.2"
+BUILD_DATE = "2025_07_30"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -39,12 +39,12 @@ if sys.platform.startswith('win'): # Windows only
 # Global parameters (for initialisation)
 # =============================================================================
 # Application icon path
-LOGO_RELATIVE_PATH = "img" + os.path.sep + "logo-96.ico"
-EXPORT_PDF_BUTTON_ICON = r"img/floppy-disk.png"
-DELETE_BUTTON_ICON = r"img/delete.png"
+LOGO_RELATIVE_PATH = "img/logo-96.ico"
+EXPORT_PDF_BUTTON_ICON = "img/floppy-disk.png"
+DELETE_BUTTON_ICON = "img/delete.png"
 
 # Window size
-WINDOW_SIZE = (707, 1000)
+WINDOW_SIZE = (647, 980)
 
 # Number of cards on the page (do not change this)
 N_CARDS = 8
@@ -90,14 +90,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        scriptDir = os.path.dirname(os.path.realpath(__file__))
-        self.setWindowIcon(QtGui.QIcon(os.path.join(scriptDir, LOGO_RELATIVE_PATH)))
+        #scriptDir = os.path.dirname(os.path.realpath(__file__))
+        #self.setWindowIcon(QtGui.QIcon(os.path.join(scriptDir, LOGO_RELATIVE_PATH)))
+        self.setWindowIcon(QtGui.QIcon(resource_path(LOGO_RELATIVE_PATH)))
         self.setWindowTitle(MAIN_WINDOW_TITLE)
         self.setFixedSize(*WINDOW_SIZE)
         
         # Give each widget a more explicit name to make referencing easier
         self.frames = {}
-        self.already_used_combos = {}
         self.search_card_edits = {}
         self.search_card_combos = {}
         self.copy_from_buttons = {}
@@ -113,7 +113,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 _widget.card_number = n # set card number to n
             # Fill the dictionaries for easier referencing
             self.frames[n] = _frame
-            self.already_used_combos[n] = self.__getattribute__(f"AlreadyUsedCardsCombo_{n}")
             self.search_card_edits[n] = self.__getattribute__(f"SearchCardEdit_{n}")
             self.search_card_combos[n] = self.__getattribute__(f"SearchCardCombo_{n}")
             self.copy_from_buttons[n] = {"up":      self.__getattribute__(f"CopyUpButton_{n}"),
@@ -123,9 +122,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.delete_buttons[n] = self.__getattribute__(f"DeleteButton_{n}")
         
         # Set icons
-        self.ExportPDFButton.setIcon(QtGui.QIcon(os.path.join(scriptDir, EXPORT_PDF_BUTTON_ICON)))
+        self.ExportPDFButton.setIcon(QtGui.QIcon(resource_path(EXPORT_PDF_BUTTON_ICON)))
         for n in range(N_CARDS+1):
-            self.delete_buttons[n].setIcon(QtGui.QIcon(os.path.join(scriptDir, DELETE_BUTTON_ICON)))
+            self.delete_buttons[n].setIcon(QtGui.QIcon(resource_path(DELETE_BUTTON_ICON)))
         
         # Connect each widget to its function
         self.GetImagesButton.clicked.connect(lambda checked:self.pull_images()) # Note: lambda checked is ONLY for QButtons;
@@ -146,6 +145,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.copy_from_buttons[n]["right"].clicked.connect(lambda checked:self.copy_from())
             self.delete_buttons[n].clicked.connect(lambda checked: self.reset_frame())
         
+        # Which buttons will be stop buttons? (which ones will be used as buttons that can display the "STOP" message to interrupt a QThread)
+        self.GetImagesStopButton = StopButton(self.GetImagesButton)
+        self.ExportPDFStopButton = StopButton(self.ExportPDFButton)
+        
         # Initialise worker threads
         self.worker_thread_card_search = WorkerThreadCardSearch() # this is the worker thread object
         self.worker_thread_card_search.signal.connect(self.card_search_finished) # connect the signal from the thread to the finished method
@@ -160,11 +163,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         _widgets = self.findChildren(QtWidgets.QGroupBox)
         for widget in _widgets:
             widget.setStyleSheet(QGROUPBOXES_BACKGROUND_COLOR)
-        
-        # FOR NOW, disable all "already-used" group boxes #TODO: do something with this?
-        _widgets = self.findChildren(QtWidgets.QGroupBox, QtCore.QRegularExpression("AlreadyUsed"))
-        for widget in _widgets:
-            widget.setVisible(False)
         
         # Set focus on first search card edit
         self.search_card_edits[0].setFocus()
@@ -213,8 +211,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def pull_images(self):
         if not self.worker_thread_card_image_pull.isRunning():
             # Toggle buttons
-            self.toggle_widgets(state="start", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStart"])
+            self.toggle_widgets(state="start", stop_button=self.GetImagesStopButton)
             
             # Inform the worker thread
             self.worker_thread_card_image_pull.all_params = self.all_params
@@ -223,8 +220,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.worker_thread_card_image_pull.start()
         else:
             self.worker_thread_card_image_pull.stop()
-            self.toggle_widgets(state="stopping", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stopping", stop_button=self.GetImagesStopButton)
     
     @report_exceptions
     def image_pull_finished(self, worker_thread_output):
@@ -233,8 +229,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif isinstance(worker_thread_output, Exception):
             show_error("Something went wrong while getting the images.",
                        worker_thread_output)
-            self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop", stop_button=self.GetImagesStopButton)
         elif type(worker_thread_output) is dict: # This means that the thread finished!
             images = worker_thread_output["images_raw"]
             for (n, image) in images.items():
@@ -262,8 +257,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 # pixmap.loadFromData(image)
                 # qlabel.setPixmap(pixmap)
                 #self.frames[n].setStyleSheet(f'background-image: url("{image}"); background-repeat: no-repeat;')
-            self.toggle_widgets(state="stop", stop_button=self.GetImagesButton,
-                                stop_button_text=GET_IMAGES_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop", stop_button=self.GetImagesStopButton)
     
     #%% Export PDF thread
     @report_exceptions
@@ -271,9 +265,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not self.worker_thread_PDF_export.isRunning():
             _file = self.get_save_file()
             
+            if len(_file) == 0:
+                return
+            
             # Toggle buttons
-            self.toggle_widgets(state="start", stop_button=self.ExportPDFButton,
-                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStart"])
+            self.toggle_widgets(state="start", stop_button=self.ExportPDFStopButton)
             
             # Inform the worker thread
             self.worker_thread_PDF_export.all_params = self.all_params
@@ -283,8 +279,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.worker_thread_PDF_export.start()
         else:
             self.worker_thread_PDF_export.stop()
-            self.toggle_widgets(state="stopping", stop_button=self.ExportPDFButton,
-                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stopping", stop_button=self.ExportPDFStopButton)
     
     @report_exceptions
     def PDF_export_finished(self, worker_thread_output):
@@ -293,14 +288,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif isinstance(worker_thread_output, Exception):
             show_error("Something went wrong during PDF export.",
                        worker_thread_output)
-            self.toggle_widgets(state="stop", stop_button=self.ExportPDFButton,
-                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop", stop_button=self.ExportPDFStopButton)
         elif type(worker_thread_output) is dict: # This means that the thread finished!
             file_saved = worker_thread_output["file_saved"]
             show_save_confirmation("File successfully saved:", file_saved,
                                    save_folder=os.path.abspath(file_saved))
-            self.toggle_widgets(state="stop", stop_button=self.ExportPDFButton,
-                                stop_button_text=EXPORT_PDF_BUTTON_TEXT["onStop"])
+            self.toggle_widgets(state="stop", stop_button=self.ExportPDFStopButton)
     
     #%% Other methods
     @report_exceptions
@@ -355,21 +348,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         return res
     
     @report_exceptions
-    def toggle_widgets(self, state="start", stop_button=None, stop_button_text=""):
-        widgets_list = list(self.frames.values()) + [self.GetImagesButton, self.ExportPDFButton] # all widgets that need to be greyed out
+    def toggle_widgets(self, state="start", stop_button=None):
+        new_state = (state=="stop")
+        widgets_list = list(self.frames.values()) + [self.GetImagesStopButton,
+                                                     self.ExportPDFStopButton] # all widgets that need to be greyed out
         if stop_button is not None:
-            stop_button.setText(stop_button_text)
-            if state=="start":
-                stop_button.setStyleSheet("color:red;")
-                stop_button.setEnabled(True)
-            elif state=="stopping":
-                stop_button.setStyleSheet("")
-                stop_button.setEnabled(False)
-            elif state=="stop":
-                stop_button.setStyleSheet("")
-                stop_button.setEnabled(True)
             widgets_list.remove(stop_button) # remove stop_button from list of widgets to toggle
-        new_state = False if state=="start" else True
+            stop_button.toggle(state)
         for widget in widgets_list:
             widget.setEnabled(new_state)
         if state=="start":
