@@ -24,7 +24,7 @@ from YGOCardTools import CardList
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3"
+VERSION = "0.3.1"
 BUILD_DATE = "2025_07_31"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
@@ -40,11 +40,17 @@ if sys.platform.startswith('win'): # Windows only
 # =============================================================================
 # Application icon path
 LOGO_RELATIVE_PATH = "img/logo-96.ico"
+RUN_SEARCH_ICON = "img/magnifier.png"
+GET_IMAGES_BUTTON_ICON = "img/picture.png"
 EXPORT_PDF_BUTTON_ICON = "img/floppy-disk.png"
 DELETE_BUTTON_ICON = "img/delete.png"
+UP_ARROW_ICON = "img/up-arrow.png"
+DOWN_ARROW_ICON = "img/down-arrow.png"
+LEFT_ARROW_ICON = "img/left-arrow.png"
+RIGHT_ARROW_ICON = "img/right-arrow.png"
 
-# Window size
-WINDOW_SIZE = (647, 980)
+# # Window size
+# WINDOW_SIZE = (647, 980)
 
 # Number of cards on the page (do not change this)
 N_CARDS = 8
@@ -101,11 +107,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #self.setWindowIcon(QtGui.QIcon(os.path.join(scriptDir, LOGO_RELATIVE_PATH)))
         self.setWindowIcon(QtGui.QIcon(resource_path(LOGO_RELATIVE_PATH)))
         self.setWindowTitle(MAIN_WINDOW_TITLE)
-        self.setFixedSize(*WINDOW_SIZE)
+        #self.setFixedSize(*WINDOW_SIZE)
         
         # Give each widget a more explicit name to make referencing easier
         self.frames = {}
         self.search_card_edits = {}
+        self.run_search_buttons = {}
         self.search_card_combos = {}
         self.copy_from_buttons = {}
         self.delete_buttons = {}
@@ -121,6 +128,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             # Fill the dictionaries for easier referencing
             self.frames[n] = _frame
             self.search_card_edits[n] = self.__getattribute__(f"SearchCardEdit_{n}")
+            self.run_search_buttons[n] = self.__getattribute__(f"RunSearchToolButton_{n}")
             self.search_card_combos[n] = self.__getattribute__(f"SearchCardCombo_{n}")
             self.copy_from_buttons[n] = {"up":      self.__getattribute__(f"CopyUpButton_{n}"),
                                          "down":    self.__getattribute__(f"CopyDownButton_{n}"),
@@ -129,9 +137,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.delete_buttons[n] = self.__getattribute__(f"DeleteButton_{n}")
         
         # Set icons
+        self.GetImagesButton.setIcon(QtGui.QIcon(resource_path(GET_IMAGES_BUTTON_ICON)))
         self.ExportPDFButton.setIcon(QtGui.QIcon(resource_path(EXPORT_PDF_BUTTON_ICON)))
         for n in range(N_CARDS+1):
+            self.run_search_buttons[n].setIcon(QtGui.QIcon(resource_path(RUN_SEARCH_ICON)))
             self.delete_buttons[n].setIcon(QtGui.QIcon(resource_path(DELETE_BUTTON_ICON)))
+            self.copy_from_buttons[n]["up"].setIcon(QtGui.QIcon(resource_path(UP_ARROW_ICON)))
+            self.copy_from_buttons[n]["down"].setIcon(QtGui.QIcon(resource_path(DOWN_ARROW_ICON)))
+            self.copy_from_buttons[n]["left"].setIcon(QtGui.QIcon(resource_path(LEFT_ARROW_ICON)))
+            self.copy_from_buttons[n]["right"].setIcon(QtGui.QIcon(resource_path(RIGHT_ARROW_ICON)))
         
         # Connect each widget to its function
         self.GetImagesButton.clicked.connect(lambda checked:self.pull_images()) # Note: lambda checked is ONLY for QButtons;
@@ -142,6 +156,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ExportPDFButton.clicked.connect(lambda checked:self.export_PDF())
         for n in range(N_CARDS+1):
             self.search_card_edits[n].returnPressed.connect(self.search_card_name) # editingFinished also works, includes losing focus
+            self.run_search_buttons[n].clicked.connect(lambda checked: self.search_card_name())
             self.copy_from_buttons[n]["up"].direction = "up" # set a property called "direction"
             self.copy_from_buttons[n]["up"].clicked.connect(lambda checked:self.copy_from())
             self.copy_from_buttons[n]["down"].direction = "down"
@@ -362,8 +377,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @report_exceptions
     def toggle_widgets(self, state="start", stop_button=None):
         new_state = (state=="stop")
-        widgets_list = list(self.frames.values()) + [self.GetImagesStopButton,
-                                                     self.ExportPDFStopButton] # all widgets that need to be greyed out
+        widgets_list = list(self.frames.values()) + [self.LanguageGroupBox, \
+            self.GetImagesStopButton, self.ExportPDFStopButton] # all widgets that need to be greyed out
         if stop_button is not None:
             widgets_list.remove(stop_button) # remove stop_button from list of widgets to toggle
             stop_button.toggle(state)

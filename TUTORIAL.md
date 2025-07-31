@@ -1,4 +1,4 @@
-# Tutorial for YGO Proxy Printer v0.2
+# YGO Proxy Printer tutorial
 1. The interface consists of 9 boxes (3 rows and 3 columns):
 ![](tutorial/1.png)
 

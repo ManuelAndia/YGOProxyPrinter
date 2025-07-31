@@ -1,5 +1,5 @@
 # YGO Proxy Printer
-v0.3, build 2025_07_31
+v0.3.1, build 2025_07_31
 
 ## Tutorial
 See provided [Tutorial](./TUTORIAL.md).
