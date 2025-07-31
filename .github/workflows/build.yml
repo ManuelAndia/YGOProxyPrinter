@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-windows
-          path: dist/main.exe
+          path: dist\YGOProxyPrinter_UI.exe
 
   build-linux:
     runs-on: ubuntu-20.04
@@ -59,7 +59,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-linux
-          path: dist/YGOProxyPrinter
+          path: dist/YGOProxyPrinter_UI
 
   build-macos:
     runs-on: macos-13
@@ -78,10 +78,10 @@ jobs:
 
       - name: Build macOS App
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon "img/logo-96.ico" --add-data "img/;img/"  YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo-96.ico --add-data=img:img YGOProxyPrinter_UI.py
 
       - name: Upload macOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-macos
-          path: dist/YGOProxyPrinter
+          path: dist/YGOProxyPrinter_UI
