@@ -24,8 +24,8 @@ from YGOCardTools import CardList
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.2"
-BUILD_DATE = "2025_07_30"
+VERSION = "0.3"
+BUILD_DATE = "2025_07_31"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -55,6 +55,13 @@ QGROUPBOXES_BACKGROUND_COLOR = r"QGroupBox {background: rgba(255, 255, 255, .7);
 # Button texts
 GET_IMAGES_BUTTON_TEXT = {"onStart": "STOP", "onStop": "Get images"}
 EXPORT_PDF_BUTTON_TEXT = {"onStart": "STOP", "onStop": "Export PDF"}
+
+# Available languages for card names
+AVAILABLE_CARD_NAME_LANGUAGES = {"English": "en",
+                                 "Français": "fr",
+                                 "Deutsch": "de",
+                                 "Italiano": "it",
+                                 "Português": "pt"}
 
 #%%============================================================================
 # Templates
@@ -166,6 +173,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         
         # Set focus on first search card edit
         self.search_card_edits[0].setFocus()
+        
+        # Set available languages for card names
+        self.LanguageComboBox.addItems(list(AVAILABLE_CARD_NAME_LANGUAGES.keys()))
     
     #%% Search card name thread
     @report_exceptions
@@ -342,6 +352,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                      "search_results":      self.frames[n].search_results,
                                      "current_index":       self.search_card_combos[n].currentIndex(),
                                      "image":               self.frames[n].image}
+        
+        res.language = AVAILABLE_CARD_NAME_LANGUAGES[self.LanguageComboBox.currentText()] # language code
         
         #res.all_used_cards = np.sum([v["search_results"] for v in res.frames.values()])
         

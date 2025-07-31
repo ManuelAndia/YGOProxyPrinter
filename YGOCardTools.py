@@ -19,6 +19,11 @@ from PIL import Image
 
 pattern = r"\d+"
 
+#%% Functions
+def language_request(language="en"):
+    assert(language.lower() in ["en", "fr", "de", "it", "pt"])
+    return "" if language.lower()=="en" else f"&language={language.lower()}"
+
 #%% Classes
 class Card(object):
     def __init__(self, d):
@@ -172,9 +177,12 @@ class NumberXyzCardListFromYGOProDeck(CardListFromYGOProDeck):
             if card.Number<0: self.card_list.remove(card)
 
 class NameMatchesFromYGOProDeck(CardListFromYGOProDeck):
-    def __init__(self, card_name, **kwargs):
+    def __init__(self, card_name, language="en", **kwargs):
+        _lang = language_request(language)
+        
         # Get all matches for search
-        API_request = r"https://db.ygoprodeck.com/api/v7/cardinfo.php?fname={}".format(card_name)
+        API_request = r"https://db.ygoprodeck.com/api/v7/cardinfo.php?fname={card_name}{language}".format(card_name=card_name,
+                                                                                                          language=_lang)
         
         super().__init__(API_request, **kwargs)
 

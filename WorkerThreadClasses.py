@@ -29,11 +29,12 @@ class WorkerThreadCardSearch(QThread):
         all_params = self.all_params # other parameters
         n = self.n # frame number
         search_string = all_params.frame_contents[n]["card_search_text"] # search string
+        language = all_params.language
         
         try:
             self.signal.emit(10) # update progress bar
             
-            res = NameMatchesFromYGOProDeck(search_string)
+            res = NameMatchesFromYGOProDeck(search_string, language=language) # includes language code
             
             self.signal.emit(80)
             
