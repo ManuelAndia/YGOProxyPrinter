@@ -1,11 +1,11 @@
 name: Build for Windows, macOS, and Linux
-on: [push, workflow_dispatch]  # Trigger on push or manual run
+on: [push, workflow_dispatch]
 
 jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-12, windows-latest]  # Updated OS versions
+        os: [ubuntu-22.04, macos-12, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -14,21 +14,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"  # Tested with Qt/PyInstaller
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
           pip install PyInstaller PyQt5
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            sudo apt-get update && sudo apt-get install -y libxcb-xinerama0  # Linux Qt deps
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
           fi
 
       - name: Run PyInstaller
-        run: |
-          pyinstaller --onefile --windowed --name MyApp_${{ runner.os }} your_script.py
+        run: pyinstaller --onefile --windowed --name MyApp_${{ runner.os }} your_script.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: MyApp_${{ runner.os }}_Executable
           path: dist/
