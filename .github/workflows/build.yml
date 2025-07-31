@@ -53,7 +53,7 @@ jobs:
 
       - name: Build Linux Binary
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon "img/logo-96.ico" --add-data "img/;img/"  YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo-96.ico --add-data=img:img YGOProxyPrinter_UI.py
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
