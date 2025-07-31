@@ -16,12 +16,13 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
-        run: |
-          pip install PyInstaller PyQt5
-          if [[ "$RUNNER_OS" == "Linux" ]]; then
-            sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
-          fi
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
+
+      - name: Install Windows dependencies
+        if: runner.os == 'Windows'
+        run: choco install -y python  # Example (adjust as needed)
 
       - name: Run PyInstaller
         run: pyinstaller --onefile --windowed --name MyApp_${{ runner.os }} your_script.py
