@@ -9,7 +9,7 @@ from PyQt5 import QtWidgets, QtGui, QtCore
 #     NavigationToolbar2QT as NavigationToolbar)
 #import matplotlib.pyplot as plt, numpy as np
 
-import sys, os
+import sys, os, re
 
 from ui_mainwindow import Ui_MainWindow
 
@@ -24,8 +24,8 @@ from YGOCardTools import CardList
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.1"
-BUILD_DATE = "2025_07_31"
+VERSION = "0.3.2"
+BUILD_DATE = "2025_08_02"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -62,13 +62,6 @@ QGROUPBOXES_BACKGROUND_COLOR = r"QGroupBox {background: rgba(255, 255, 255, .7);
 GET_IMAGES_BUTTON_TEXT = {"onStart": "STOP", "onStop": "Get images"}
 EXPORT_PDF_BUTTON_TEXT = {"onStart": "STOP", "onStop": "Export PDF"}
 
-# Available languages for card names
-AVAILABLE_CARD_NAME_LANGUAGES = {"English": "en",
-                                 "Français": "fr",
-                                 "Deutsch": "de",
-                                 "Italiano": "it",
-                                 "Português": "pt"}
-
 #%%============================================================================
 # Templates
 # =============================================================================
@@ -77,7 +70,7 @@ AVAILABLE_CARD_NAME_LANGUAGES = {"English": "en",
 #%%============================================================================
 # Definitions - functions and decorators
 # =============================================================================
-def calculate_source_frame_number(n, direction):
+def calculate_destination_frame_number(n, direction):
     assert(n>=0 and n<=N_CARDS)
     if direction=="up":
         return n-3
@@ -114,7 +107,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_card_edits = {}
         self.run_search_buttons = {}
         self.search_card_combos = {}
-        self.copy_from_buttons = {}
+        self.copy_to_buttons = {}
         self.delete_buttons = {}
         
         # Give each widget a number corresponding to the card number
@@ -130,10 +123,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.search_card_edits[n] = self.__getattribute__(f"SearchCardEdit_{n}")
             self.run_search_buttons[n] = self.__getattribute__(f"RunSearchToolButton_{n}")
             self.search_card_combos[n] = self.__getattribute__(f"SearchCardCombo_{n}")
-            self.copy_from_buttons[n] = {"up":      self.__getattribute__(f"CopyUpButton_{n}"),
-                                         "down":    self.__getattribute__(f"CopyDownButton_{n}"),
-                                         "left":    self.__getattribute__(f"CopyLeftButton_{n}"),
-                                         "right":   self.__getattribute__(f"CopyRightButton_{n}")}
+            self.copy_to_buttons[n] = {"up":      self.__getattribute__(f"CopyUpButton_{n}"),
+                                       "down":    self.__getattribute__(f"CopyDownButton_{n}"),
+                                       "left":    self.__getattribute__(f"CopyLeftButton_{n}"),
+                                       "right":   self.__getattribute__(f"CopyRightButton_{n}")}
             self.delete_buttons[n] = self.__getattribute__(f"DeleteButton_{n}")
         
         # Set icons
@@ -142,10 +135,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for n in range(N_CARDS+1):
             self.run_search_buttons[n].setIcon(QtGui.QIcon(resource_path(RUN_SEARCH_ICON)))
             self.delete_buttons[n].setIcon(QtGui.QIcon(resource_path(DELETE_BUTTON_ICON)))
-            self.copy_from_buttons[n]["up"].setIcon(QtGui.QIcon(resource_path(UP_ARROW_ICON)))
-            self.copy_from_buttons[n]["down"].setIcon(QtGui.QIcon(resource_path(DOWN_ARROW_ICON)))
-            self.copy_from_buttons[n]["left"].setIcon(QtGui.QIcon(resource_path(LEFT_ARROW_ICON)))
-            self.copy_from_buttons[n]["right"].setIcon(QtGui.QIcon(resource_path(RIGHT_ARROW_ICON)))
+            self.copy_to_buttons[n]["up"].setIcon(QtGui.QIcon(resource_path(UP_ARROW_ICON)))
+            self.copy_to_buttons[n]["down"].setIcon(QtGui.QIcon(resource_path(DOWN_ARROW_ICON)))
+            self.copy_to_buttons[n]["left"].setIcon(QtGui.QIcon(resource_path(LEFT_ARROW_ICON)))
+            self.copy_to_buttons[n]["right"].setIcon(QtGui.QIcon(resource_path(RIGHT_ARROW_ICON)))
         
         # Connect each widget to its function
         self.GetImagesButton.clicked.connect(lambda checked:self.pull_images()) # Note: lambda checked is ONLY for QButtons;
@@ -157,14 +150,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for n in range(N_CARDS+1):
             self.search_card_edits[n].returnPressed.connect(self.search_card_name) # editingFinished also works, includes losing focus
             self.run_search_buttons[n].clicked.connect(lambda checked: self.search_card_name())
-            self.copy_from_buttons[n]["up"].direction = "up" # set a property called "direction"
-            self.copy_from_buttons[n]["up"].clicked.connect(lambda checked:self.copy_from())
-            self.copy_from_buttons[n]["down"].direction = "down"
-            self.copy_from_buttons[n]["down"].clicked.connect(lambda checked:self.copy_from())
-            self.copy_from_buttons[n]["left"].direction = "left"
-            self.copy_from_buttons[n]["left"].clicked.connect(lambda checked:self.copy_from())
-            self.copy_from_buttons[n]["right"].direction = "right"
-            self.copy_from_buttons[n]["right"].clicked.connect(lambda checked:self.copy_from())
+            self.copy_to_buttons[n]["up"].direction = "up" # set a property called "direction"
+            self.copy_to_buttons[n]["up"].clicked.connect(lambda checked:self.copy_to())
+            self.copy_to_buttons[n]["down"].direction = "down"
+            self.copy_to_buttons[n]["down"].clicked.connect(lambda checked:self.copy_to())
+            self.copy_to_buttons[n]["left"].direction = "left"
+            self.copy_to_buttons[n]["left"].clicked.connect(lambda checked:self.copy_to())
+            self.copy_to_buttons[n]["right"].direction = "right"
+            self.copy_to_buttons[n]["right"].clicked.connect(lambda checked:self.copy_to())
             self.delete_buttons[n].clicked.connect(lambda checked: self.reset_frame())
         
         # Which buttons will be stop buttons? (which ones will be used as buttons that can display the "STOP" message to interrupt a QThread)
@@ -190,7 +183,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_card_edits[0].setFocus()
         
         # Set available languages for card names
-        self.LanguageComboBox.addItems(list(AVAILABLE_CARD_NAME_LANGUAGES.keys()))
+        self.EnglishRadioButton.setText("")
+        self.EnglishRadioButton.setIcon(QtGui.QIcon(resource_path("img/united-kingdom.png")))
+        self.EnglishRadioButton.language_code = "en"
+        self.FrenchRadioButton.setText("")
+        self.FrenchRadioButton.setIcon(QtGui.QIcon(resource_path("img/france.png")))
+        self.FrenchRadioButton.language_code = "fr"
+        self.GermanRadioButton.setText("")
+        self.GermanRadioButton.setIcon(QtGui.QIcon(resource_path("img/germany.png")))
+        self.GermanRadioButton.language_code = "de"
+        self.ItalianRadioButton.setText("")
+        self.ItalianRadioButton.setIcon(QtGui.QIcon(resource_path("img/italy.png")))
+        self.ItalianRadioButton.language_code = "it"
+        self.PortugueseRadioButton.setText("")
+        self.PortugueseRadioButton.setIcon(QtGui.QIcon(resource_path("img/portugal.png")))
+        self.PortugueseRadioButton.language_code = "pt"
     
     #%% Search card name thread
     @report_exceptions
@@ -276,12 +283,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 palette.setBrush(QtGui.QPalette.ColorRole.Window, brush)
                 _frame.setPalette(palette)
                 _frame.setAutoFillBackground(True)
-                # qlabel = QtWidgets.QLabel(self.frames[n])
-                # self.verticalLayout.addWidget(qlabel)
-                # pixmap = QtGui.QPixmap()
-                # pixmap.loadFromData(image)
-                # qlabel.setPixmap(pixmap)
-                #self.frames[n].setStyleSheet(f'background-image: url("{image}"); background-repeat: no-repeat;')
             self.toggle_widgets(state="stop", stop_button=self.GetImagesStopButton)
     
     #%% Export PDF thread
@@ -337,19 +338,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_card_edits[n].clear()
     
     @report_exceptions
-    def copy_from(self):
+    def copy_to(self):
         sender = self.sender()
-        n = sender.card_number
-        direction = sender.direction
-        m = calculate_source_frame_number(n, direction)
-        source_frame = self.frames[m]
-        _frame = self.frames[n]
-        _frame.search_results = source_frame.search_results
-        _combobox = self.search_card_combos[n]
-        _combobox.clear()
-        _combobox.addItems(source_frame.search_results.Name) # list of all found card names
-        _combobox.setCurrentIndex(self.search_card_combos[m].currentIndex())
-        self.search_card_edits[n].setText(self.search_card_edits[m].text())
+        n = sender.card_number # the source frame number
+        direction = sender.direction # the direction pointed to by the button
+        m = calculate_destination_frame_number(n, direction) # the destination frame number
+        
+        source_frame = self.frames[n]
+        destination_frame = self.frames[m]
+        
+        source_combobox = self.search_card_combos[n]
+        destination_combobox = self.search_card_combos[m]
+        
+        source_edit = self.search_card_edits[n]
+        destination_edit = self.search_card_edits[m]
+        
+        destination_frame.search_results = source_frame.search_results
+        destination_combobox.clear()
+        destination_combobox.addItems(destination_frame.search_results.Name) # list of all found card names
+        destination_combobox.setCurrentIndex(source_combobox.currentIndex())
+        destination_edit.setText(source_edit.text())
     
     @report_exceptions
     def show_PDF_file(self):
@@ -368,7 +376,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                      "current_index":       self.search_card_combos[n].currentIndex(),
                                      "image":               self.frames[n].image}
         
-        res.language = AVAILABLE_CARD_NAME_LANGUAGES[self.LanguageComboBox.currentText()] # language code
+        res.language = self.get_search_language() # AVAILABLE_CARD_NAME_LANGUAGES[self.LanguageComboBox.currentText()] # language code
         
         #res.all_used_cards = np.sum([v["search_results"] for v in res.frames.values()])
         
@@ -390,6 +398,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.update_progressBar(100)
         elif state=="stop":
             self.update_progressBar(100)
+    
+    @report_exceptions
+    def get_search_language(self):
+        for widget in self.LanguageGroupBox.findChildren(QtWidgets.QRadioButton):
+            if widget.isChecked():
+                return widget.language_code
+        return "en"
     
     #%% Utilities
     def get_save_file(self, message="Select file to save data", default_name="",

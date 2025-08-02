@@ -149,7 +149,7 @@ def report_exceptions(f):
     """
     def wrapped_f(*args, **kwargs):
         try:
-            f(*args, **kwargs)
+            return f(*args, **kwargs)
         except Exception as err:
             show_error("An error occurred.", err)
     return wrapped_f
