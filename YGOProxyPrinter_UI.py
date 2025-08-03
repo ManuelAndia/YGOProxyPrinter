@@ -39,7 +39,7 @@ if sys.platform.startswith('win'): # Windows only
 # Global parameters (for initialisation)
 # =============================================================================
 # Application icon path
-LOGO_RELATIVE_PATH = "img/logo-96.ico"
+LOGO_RELATIVE_PATH = "img/logo.png"
 RUN_SEARCH_ICON = "img/magnifier.png"
 GET_IMAGES_BUTTON_ICON = "img/picture.png"
 EXPORT_PDF_BUTTON_ICON = "img/floppy-disk.png"

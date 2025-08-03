@@ -19,10 +19,24 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
+      
+      # Install Node.js and png2icons
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
+      - name: Install png2icons
+        run: npm install -g png2icons
+
+      # Convert logo.png to .ico
+      - name: Generate Windows .ico icon
+        run: |
+          png2icons ./img/logo.png ./img/logo -icowe
+      
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon "img/logo-96.ico" --add-data "img/;img/"  YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon "img/logo.ico" --add-data "img/;img/"  YGOProxyPrinter_UI.py
 
       - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
@@ -46,10 +60,24 @@ jobs:
           sudo apt install -y libxcb-xinerama0
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
+      
+      # Install Node.js and png2icons
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
+      - name: Install png2icons
+        run: npm install -g png2icons
+
+      # Convert logo.png to .ico
+      - name: Generate .ico icon
+        run: |
+          png2icons ./img/logo.png ./img/logo -ico
+      
       - name: Build Linux Binary
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=img/logo-96.ico --add-data=img:img YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.ico --add-data=img:img YGOProxyPrinter_UI.py
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
