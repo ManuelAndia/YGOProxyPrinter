@@ -1,12 +1,8 @@
 name: Build PyQt5 Executables
 
-on: push
-
-# on:
-  # push:
-    # branches: [ main ]
-  # pull_request:
-    # branches: [ main ]
+on:
+    push:
+        branches: [ master ]
 
 jobs:
   build-windows:
@@ -75,13 +71,46 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
+      
+      # Install Node.js and png2icons
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Build macOS App
+      - name: Install png2icons
+        run: npm install -g png2icons
+
+      # Convert logo.png to .icns (macOS icon format)
+      - name: Generate macOS .icns icon
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=img/logo-96.ico --add-data=img:img YGOProxyPrinter_UI.py
+          png2icons ./img/logo.png ./img/logo -icns
 
-      - name: Upload macOS Artifact
+      # # Build macOS .app bundle (PyInstaller)
+      # - name: Build macOS App Bundle
+        # run: |
+          # pyinstaller --noconfirm --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter" YGOProxyPrinter_UI.py
+          # # Create a proper .app bundle (PyInstaller on macOS generates a .app by default when --windowed is used)
+          # mv dist/YGOProxyPrinter.app dist/YGOProxyPrinter_macOS.app
+      - name: Build macOS App bundle
+        run: |
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter" YGOProxyPrinter_UI.py
+      
+      # Package the .app into a ZIP for easier download
+      - name: Package .app for distribution
+        run: |
+          cd dist
+          zip -r YGOProxyPrinter.zip YGOProxyPrinter.app
+
+      # Upload the final .app bundle as an artifact
+      - name: Upload macOS Artifact (.app bundle)
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-macos
-          path: dist/YGOProxyPrinter_UI
+          path: dist/YGOProxyPrinter.zip
+
+      # - name: Upload macOS Artifact
+        # uses: actions/upload-artifact@v4
+        # with:
+          # name: YGOProxyPrinter-macos
+          # path: dist/YGOProxyPrinter_UI
