@@ -24,8 +24,8 @@ from YGOCardTools import CardList
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.2"
-BUILD_DATE = "2025_08_02"
+VERSION = "0.3.3"
+BUILD_DATE = "2025_08_03"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)

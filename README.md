@@ -1,5 +1,4 @@
 # YGO Proxy Printer
-v0.3.1, build 2025_07_31
 
 [![Build PyQt5 Executables](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml/badge.svg)](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml)
 
