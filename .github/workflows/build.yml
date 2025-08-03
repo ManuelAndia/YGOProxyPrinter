@@ -3,6 +3,8 @@ name: Build PyQt5 Executables
 on:
     push:
         branches: [ master ]
+    workflow_dispatch:
+        branches: [ master ]
 
 jobs:
   build-windows:
@@ -36,7 +38,7 @@ jobs:
       
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon "img/logo.ico" --add-data "img/;img/"  YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon "img/logo.ico" --add-data "img/;img/" --splash "img/Splash_screen.png" YGOProxyPrinter_UI.py
 
       - name: Upload EXE Artifact
         uses: actions/upload-artifact@v4
@@ -77,7 +79,7 @@ jobs:
       
       - name: Build Linux Binary
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.ico --add-data=img:img YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.ico --add-data=img:img --splash "img/Splash_screen.png" YGOProxyPrinter_UI.py
 
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
@@ -114,31 +116,20 @@ jobs:
         run: |
           png2icons ./img/logo.png ./img/logo -icns
 
-      # # Build macOS .app bundle (PyInstaller)
-      # - name: Build macOS App Bundle
-        # run: |
-          # pyinstaller --noconfirm --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter" YGOProxyPrinter_UI.py
-          # # Create a proper .app bundle (PyInstaller on macOS generates a .app by default when --windowed is used)
-          # mv dist/YGOProxyPrinter.app dist/YGOProxyPrinter_macOS.app
       - name: Build macOS App bundle
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter" YGOProxyPrinter_UI.py
+          pyinstaller --noconfirm --onefile --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter_UI" YGOProxyPrinter_UI.py
       
-      # Package the .app into a ZIP for easier download
-      - name: Package .app for distribution
-        run: |
-          cd dist
-          zip -r YGOProxyPrinter.zip YGOProxyPrinter.app
+      # # Package the .app into a ZIP for easier download
+      # - name: Package .app for distribution
+        # run: |
+          # cd dist
+          # zip -r YGOProxyPrinter_UI.zip YGOProxyPrinter_UI.app
 
       # Upload the final .app bundle as an artifact
       - name: Upload macOS Artifact (.app bundle)
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-macos
-          path: dist/YGOProxyPrinter.zip
-
-      # - name: Upload macOS Artifact
-        # uses: actions/upload-artifact@v4
-        # with:
-          # name: YGOProxyPrinter-macos
-          # path: dist/YGOProxyPrinter_UI
+          path: dist/YGOProxyPrinter_UI.app
+          #path: dist/YGOProxyPrinter_UI.zip

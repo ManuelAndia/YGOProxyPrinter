@@ -20,12 +20,19 @@ from Utilities_Qt import show_error, show_dialog, Parameters, show_save_confirma
 
 from YGOCardTools import CardList
 
+# Specifically to close the splash screen (for compiled version only)
+try:
+    import pyi_splash
+    pyi_splash.close()
+except:
+    pass
+
 # =============================================================================
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.3"
-BUILD_DATE = "2025_08_03"
+VERSION = "0.3.4"
+BUILD_DATE = "2025_08_04"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)

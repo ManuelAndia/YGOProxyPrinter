@@ -29,7 +29,7 @@ Finally, run the graphical user interface (GUI):
 python YGOProxyPrinter_UI.py
 ```
 
-> [!NOTE] Updating the GUI
+> [!NOTE]
 > The GUI will need to be updated after a change of the mainwindow.ui file (using, e.g., Qt Creator). Either run:
 > ```powershell
 > python UpdateGUI.py
@@ -100,3 +100,6 @@ button.setIcon(QtGui.QIcon(":/relative/path/to/icon.ico"))
 ```powershell
 pyinstaller --noconfirm --onefile --windowed --icon "path\to\YGOProxyPrinter\img\logo-96.ico" --add-data "path\to\YGOProxyPrinter\resources.py;."  "path\to\YGOProxyPrinter\YGOProxyPrinter_UI.py"
 ```
+
+## Build an executable for other systems
+The best option is to use Github Actions and configure a `.yaml` file in `.github/workflows/` (see `.github/workflows/build.yaml`).
