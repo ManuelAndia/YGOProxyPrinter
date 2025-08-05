@@ -25,19 +25,23 @@
 <img src="tutorial/3_3.png" width="500px" alt='Using the "delete" option on box number 5.' />
 <img src="tutorial/3_4.png" width="500px" alt='After using the "delete" option on box number 5, the box is now reset to an empty box.' />
 
+> [!NOTE]
+> From version 0.3.5, it is now possible to select the desired artwork variant from any card that has two or more possible artworks from which to choose, using the dropdown menu which will be automatically available in that case. See the following example with "Dark Magician" which has 9 available artworks:
+> <img src="tutorial/4.png" width="500px" alt='Selecting desired artwork among several choices, when available.' />
+
 * Click <img src="img/picture.png" width="15px" /> "Get images" to pull each card's image from the server (ignores any box with no search results). The progress bar will start filling and you may stop the process using the "<span style="color: red">STOP</span>" button:
 
-<img src="tutorial/4_1.png" width="500px" alt='Before clicking "Get images".' />
-<img src="tutorial/4_2.png" width="500px" alt='After clicking "Get images", the progress bar will start filling and a "STOP" button replaces the previous "Get images" button until operation is complete or cancelled by user.' />
+<img src="tutorial/5_1.png" width="500px" alt='Before clicking "Get images".' />
+<img src="tutorial/5_2.png" width="500px" alt='After clicking "Get images", the progress bar will start filling and a "STOP" button replaces the previous "Get images" button until operation is complete or cancelled by user.' />
 
 * If successful, the boxes will now display their respective card's image in the background (at this point, you may still change any of the boxes' contents, but you'll have to click <img src="img/picture.png" width="15px" /> "Get images" again to update the pictures):
 
-<img src="tutorial/5.png" width="500px" alt="The images of the chosen card(s) now appear in the background of each box where a card was chosen." />
+<img src="tutorial/6.png" width="500px" alt="The images of the chosen card(s) now appear in the background of each box where a card was chosen." />
 
 * You can export the result to a `.pdf` file using the <img src="img/floppy-disk.png" width="15px" /> "Export to PDF" button. If successful, the operation will show a prompt with two buttons, one of which allows the user to reveal the exported PDF in their OS's file browser:
 
-<img src="tutorial/6.png" width="500px" alt='After a successful export to PDF, the user is presented with two options: either confirming by clicking "OK", or revealing the exported file in their storage.' />
+<img src="tutorial/7.png" width="500px" alt='After a successful export to PDF, the user is presented with two options: either confirming by clicking "OK", or revealing the exported file in their storage.' />
 
 * The resulting PDF will have all cards with the correct size on an A4 page, with no spacing between the cards to facilitate the cutout process, and the document is ready to print (do not forget to check the "Actual size" check box of your PDF reader's printer interface):
 
-<img src="tutorial/7.png" width="500px" alt="Screenshot of the resulting PDF file for the example above." />
+<img src="tutorial/8.png" width="500px" alt="Screenshot of the resulting PDF file for the example above." />

@@ -31,8 +31,8 @@ except:
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.4"
-BUILD_DATE = "2025_08_04"
+VERSION = "0.3.5"
+BUILD_DATE = "2025_08_05"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -116,6 +116,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_card_combos = {}
         self.copy_to_buttons = {}
         self.delete_buttons = {}
+        self.artwork_combos = {}
         
         # Give each widget a number corresponding to the card number
         for n in range(N_CARDS+1):
@@ -135,6 +136,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                        "left":    self.__getattribute__(f"CopyLeftButton_{n}"),
                                        "right":   self.__getattribute__(f"CopyRightButton_{n}")}
             self.delete_buttons[n] = self.__getattribute__(f"DeleteButton_{n}")
+            self.artwork_combos[n] = self.__getattribute__(f"ArtworkVersionCombo_{n}")
         
         # Set icons
         self.GetImagesButton.setIcon(QtGui.QIcon(resource_path(GET_IMAGES_BUTTON_ICON)))
@@ -166,6 +168,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.copy_to_buttons[n]["right"].direction = "right"
             self.copy_to_buttons[n]["right"].clicked.connect(lambda checked:self.copy_to())
             self.delete_buttons[n].clicked.connect(lambda checked: self.reset_frame())
+            self.search_card_combos[n].currentIndexChanged.connect(lambda value: self.update_artwork_versions())
         
         # Which buttons will be stop buttons? (which ones will be used as buttons that can display the "STOP" message to interrupt a QThread)
         self.GetImagesStopButton = StopButton(self.GetImagesButton)
@@ -271,12 +274,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.toggle_widgets(state="stop", stop_button=self.GetImagesStopButton)
         elif type(worker_thread_output) is dict: # This means that the thread finished!
             images = worker_thread_output["images_raw"]
+            all_params = self.all_params
             for (n, image) in images.items():
+                _image = image[all_params.frame_contents[n]["artwork_version"]]
                 _frame = self.frames[n]
                 # Attach image to current frame
-                _frame.image = image
+                _frame.image = _image
                 # Create image data from server response
-                image_data = QtCore.QByteArray(image)
+                image_data = QtCore.QByteArray(_image)
                 # Create pixmap
                 pixmap = QtGui.QPixmap()
                 pixmap.loadFromData(image_data)
@@ -343,6 +348,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         _frame.setPalette(QtGui.QPalette())
         self.search_card_combos[n].clear()
         self.search_card_edits[n].clear()
+        self.artwork_combos[n].clear()
+        self.artwork_combos[n].setEnabled(False)
     
     @report_exceptions
     def copy_to(self):
@@ -360,11 +367,36 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         source_edit = self.search_card_edits[n]
         destination_edit = self.search_card_edits[m]
         
+        source_artwork = self.artwork_combos[n]
+        destination_artwork = self.artwork_combos[m]
+        
         destination_frame.search_results = source_frame.search_results
         destination_combobox.clear()
         destination_combobox.addItems(destination_frame.search_results.Name) # list of all found card names
         destination_combobox.setCurrentIndex(source_combobox.currentIndex())
         destination_edit.setText(source_edit.text())
+        destination_artwork.setCurrentIndex(source_artwork.currentIndex())
+    
+    @report_exceptions
+    def update_artwork_versions(self):
+        sender = self.sender()
+        n = sender.card_number
+        all_params = self.all_params
+        combobox_index = all_params.frame_contents[n]["current_index"]
+        search_results = all_params.frame_contents[n]["search_results"]
+        if len(search_results)==0: return
+        current_card = search_results[combobox_index] # Card object
+        artworks = current_card.get_image_URL()
+        N_artworks = len(artworks) # number of artworks for the currently-selected search result
+        if N_artworks==1:
+            _combobox = self.artwork_combos[n]
+            _combobox.clear()
+            _combobox.setEnabled(False)
+        elif N_artworks>1:
+            _combobox = self.artwork_combos[n]
+            _combobox.clear()
+            _combobox.addItems(map(str, range(N_artworks)))
+            _combobox.setEnabled(True)
     
     @report_exceptions
     def show_PDF_file(self):
@@ -381,6 +413,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             res.frame_contents[n] = {"card_search_text":    self.search_card_edits[n].text(),
                                      "search_results":      self.frames[n].search_results,
                                      "current_index":       self.search_card_combos[n].currentIndex(),
+                                     "artwork_version":     self.artwork_combos[n].currentIndex(),
                                      "image":               self.frames[n].image}
         
         res.language = self.get_search_language() # AVAILABLE_CARD_NAME_LANGUAGES[self.LanguageComboBox.currentText()] # language code

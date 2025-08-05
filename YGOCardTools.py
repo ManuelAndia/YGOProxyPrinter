@@ -39,15 +39,15 @@ class Card(object):
             self.Number = _Number
     
     def get_image_URL(self):
-        return self.Card_images[0]["image_url"]
+        return [_img["image_url"] for _img in self.Card_images]
     
     def get_image_raw(self):
         url = self.get_image_URL()
-        return requests.get(url).content
+        return [requests.get(_url).content for _url in url]
     
     def get_image(self):
         url = self.get_image_URL()
-        return Image.open(requests.get(url, stream=True).raw)
+        return [Image.open(requests.get(_url, stream=True).raw) for _url in url]
     
     def __repr__(self):
         return self.Name
