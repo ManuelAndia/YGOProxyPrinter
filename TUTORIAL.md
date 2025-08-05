@@ -27,6 +27,7 @@
 
 > [!NOTE]
 > From version 0.3.5, it is now possible to select the desired artwork variant from any card that has two or more possible artworks from which to choose, using the dropdown menu which will be automatically available in that case. See the following example with "Dark Magician" which has 9 available artworks:
+> 
 > <img src="tutorial/4.png" width="500px" alt='Selecting desired artwork among several choices, when available.' />
 
 * Click <img src="img/picture.png" width="15px" /> "Get images" to pull each card's image from the server (ignores any box with no search results). The progress bar will start filling and you may stop the process using the "<span style="color: red">STOP</span>" button:
