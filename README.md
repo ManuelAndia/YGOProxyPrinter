@@ -2,6 +2,7 @@
 
 [![Build PyQt5 Executables](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml/badge.svg)](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml)
 
+
 ## Tutorial
 See provided [Tutorial](./TUTORIAL.md).
 
@@ -103,3 +104,6 @@ pyinstaller --noconfirm --onefile --windowed --icon "path\to\YGOProxyPrinter\img
 
 ## Build an executable for other systems
 The best option is to use Github Actions and configure a `.yaml` file in `.github/workflows/` (see `.github/workflows/build.yaml`).
+
+## Credits
+The icons were created by the following artists on [Flaticon](https://www.flaticon.com): alfanz, Freepik, PIXARTIST, smashingstocks, Utari Nuraeni.

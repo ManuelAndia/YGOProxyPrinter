@@ -31,8 +31,8 @@ except:
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.5"
-BUILD_DATE = "2025_08_05"
+VERSION = "0.3.6"
+BUILD_DATE = "2025_08_06"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
