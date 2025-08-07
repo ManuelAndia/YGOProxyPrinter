@@ -31,8 +31,8 @@ except:
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.6"
-BUILD_DATE = "2025_08_06"
+VERSION = "0.3.7"
+BUILD_DATE = "2025_08_07"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -122,7 +122,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         for n in range(N_CARDS+1):
             _frame = self.__getattribute__(f"frame_{n}") # get frame number n
             _frame.search_results = CardList([]) # initialise each frame with an empty search result
-            _frame.image = None # initialise each frame with a None image
+            _frame.current_image = None # initialise each frame with a None image
+            _frame.artwork_images = [] # initialise each frame with empty artwork list
             _widgets = _frame.findChildren(QtWidgets.QWidget) # find all children widgets
             for _widget in _widgets:
                 _widget.card_number = n # set card number to n
@@ -169,6 +170,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.copy_to_buttons[n]["right"].clicked.connect(lambda checked:self.copy_to())
             self.delete_buttons[n].clicked.connect(lambda checked: self.reset_frame())
             self.search_card_combos[n].currentIndexChanged.connect(lambda value: self.update_artwork_versions())
+            self.artwork_combos[n].currentIndexChanged.connect(lambda value: self.set_current_artwork())
         
         # Which buttons will be stop buttons? (which ones will be used as buttons that can display the "STOP" message to interrupt a QThread)
         self.GetImagesStopButton = StopButton(self.GetImagesButton)
@@ -279,22 +281,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 _image = image[all_params.frame_contents[n]["artwork_version"]]
                 _frame = self.frames[n]
                 # Attach image to current frame
-                _frame.image = _image
-                # Create image data from server response
-                image_data = QtCore.QByteArray(_image)
-                # Create pixmap
-                pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(image_data)
-                # Scale the pixmap to fit the frame while preserving aspect ratio
-                scaled_pixmap = pixmap.scaled(_frame.size(), 
-                    QtCore.Qt.AspectRatioMode.KeepAspectRatioByExpanding,
-                    QtCore.Qt.TransformationMode.SmoothTransformation
-                )
-                palette = _frame.palette()
-                brush = QtGui.QBrush(scaled_pixmap)
-                palette.setBrush(QtGui.QPalette.ColorRole.Window, brush)
-                _frame.setPalette(palette)
-                _frame.setAutoFillBackground(True)
+                _frame.current_image = _image # only image of currently-selected artwork
+                _frame.artwork_images = image # list of images for all artworks
+                # Update frame image
+                self.update_image(_frame, _image)
             self.toggle_widgets(state="stop", stop_button=self.GetImagesStopButton)
     
     #%% Export PDF thread
@@ -344,7 +334,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         n = sender.card_number # get card number of sender
         _frame = self.frames[n]
         _frame.search_results = CardList([])
-        _frame.image = None
+        _frame.current_image = None
+        _frame.artwork_images = []
         _frame.setPalette(QtGui.QPalette())
         self.search_card_combos[n].clear()
         self.search_card_edits[n].clear()
@@ -378,9 +369,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         destination_artwork.setCurrentIndex(source_artwork.currentIndex())
     
     @report_exceptions
+    def update_image(self, frame, image):
+        # Create image data from server response
+        image_data = QtCore.QByteArray(image)
+        # Create pixmap
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(image_data)
+        # Scale the pixmap to fit the frame while preserving aspect ratio
+        scaled_pixmap = pixmap.scaled(frame.size(), 
+            QtCore.Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+            QtCore.Qt.TransformationMode.SmoothTransformation
+        )
+        palette = frame.palette()
+        brush = QtGui.QBrush(scaled_pixmap)
+        palette.setBrush(QtGui.QPalette.ColorRole.Window, brush)
+        frame.setPalette(palette)
+        frame.setAutoFillBackground(True)
+    
+    @report_exceptions
+    def remove_image(self, frame):
+        frame.current_image = None
+        frame.artwork_images = []
+        frame.setPalette(QtGui.QPalette())
+    
+    @report_exceptions
     def update_artwork_versions(self):
         sender = self.sender()
         n = sender.card_number
+        _frame = self.frames[n]
+        self.remove_image(_frame) # start by deleting the current image
         all_params = self.all_params
         combobox_index = all_params.frame_contents[n]["current_index"]
         search_results = all_params.frame_contents[n]["search_results"]
@@ -399,6 +416,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             _combobox.setEnabled(True)
     
     @report_exceptions
+    def set_current_artwork(self):
+        sender = self.sender()
+        n = sender.card_number
+        
+        _artworks = self.all_params.frame_contents[n]["artwork_images"]
+        
+        if _artworks:
+            m = sender.currentIndex() # artwork number
+            _frame = self.frames[n]
+            _image = _artworks[m]
+            self.update_image(_frame, _image)
+    
+    @report_exceptions
     def show_PDF_file(self):
         params = self.all_params
         PDFFile = os.path.abspath(params.PDFFile)
@@ -414,7 +444,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                                      "search_results":      self.frames[n].search_results,
                                      "current_index":       self.search_card_combos[n].currentIndex(),
                                      "artwork_version":     self.artwork_combos[n].currentIndex(),
-                                     "image":               self.frames[n].image}
+                                     "current_image":       self.frames[n].current_image,
+                                     "artwork_images":      self.frames[n].artwork_images}
         
         res.language = self.get_search_language() # AVAILABLE_CARD_NAME_LANGUAGES[self.LanguageComboBox.currentText()] # language code
         

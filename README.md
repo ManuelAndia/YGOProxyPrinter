@@ -2,14 +2,23 @@
 
 [![Build PyQt5 Executables](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml/badge.svg)](https://github.com/ManuelAndia/YGOProxyPrinter/actions/workflows/build.yml)
 
+## What is YGO Proxy Printer?
+It is a simple tool which allows for quickly printing up to nine Yu-Gi-Oh! card proxies, with high-resolution artworks and at the exact dimensions of an actual card (59mm × 86mm).
+
+> [!WARNING]
+> This tool is designed for casual use only, and for personal training purposes. Make sure you read and understand the card game's publisher's policies if you intend to use proxies for any other purposes.
+
+## How does it work?
+The user can quickly search for cards by name (or partial name) in the online database provided by [YGOProDeck](https://www.ygoprodeck.com). Up to nine cards can be assembled on a single page. The app then lets the user export the resulting page to a PDF file with A4 paper format (210mm × 297mm), which is ready to print! Just make sure to set up your printer to print at the actual document size, with no resizing whatsoever (usually this setting is called "Actual size").
 
 ## Tutorial
 See provided [Tutorial](./TUTORIAL.md).
 
 ## Running the software
-Either use the executables in the releases, or install your own version from source code, assuming you have a working distribution of `conda` installed on your system.
+Either use the executables in the [releases](https://github.com/ManuelAndia/YGOProxyPrinter/releases) (<u>recommended for most users</u>), or install your own version from source code, assuming you have a working distribution of `conda` installed on your system. For more details on the second option (<u>advanced users</u>), see below.
 
-### Manual installation
+<details><summary>Manual installation</summary>
+
 Create environment:
 ```powershell
 conda create -n QtCreator python=3.8.8 pip
@@ -40,7 +49,10 @@ python YGOProxyPrinter_UI.py
 > .\UpdateGUI.bat
 > ```
 
-## Build an executable for your system with PyInstaller
+</details>
+
+<details><summary>Build an executable for your system with PyInstaller</summary>
+
 ### First method: correctly referencing relative paths (<u>recommended</u>)
 This is the easiest method so far.
 
@@ -102,8 +114,13 @@ button.setIcon(QtGui.QIcon(":/relative/path/to/icon.ico"))
 pyinstaller --noconfirm --onefile --windowed --icon "path\to\YGOProxyPrinter\img\logo-96.ico" --add-data "path\to\YGOProxyPrinter\resources.py;."  "path\to\YGOProxyPrinter\YGOProxyPrinter_UI.py"
 ```
 
-## Build an executable for other systems
+</details>
+
+<details><summary>Build an executable for other systems</summary>
+
 The best option is to use Github Actions and configure a `.yaml` file in `.github/workflows/` (see `.github/workflows/build.yaml`).
+
+</details>
 
 ## Credits
 The icons were created by the following artists on [Flaticon](https://www.flaticon.com): alfanz, Freepik, PIXARTIST, smashingstocks, Utari Nuraeni.
