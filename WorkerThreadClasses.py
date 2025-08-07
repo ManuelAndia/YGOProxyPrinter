@@ -127,7 +127,7 @@ class WorkerThreadPDFExport(QThread):
             for i, (n, frame_contents) in enumerate(all_params.frame_contents.items()):
                 if self.isInterruptionRequested():
                     raise ThreadStopped("Thread was interrupted by user.")
-                _image = frame_contents["image"]
+                _image = frame_contents["current_image"]
                 if _image is not None:
                     N = n%3 # index of card horizontally
                     _x = x+N*card_w # horizontal position of current card
