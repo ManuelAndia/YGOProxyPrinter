@@ -27,12 +27,14 @@ try:
 except:
     pass
 
+from _version import __version__, __build_date__
+
 # =============================================================================
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.9"
-BUILD_DATE = "2025_08_08"
+VERSION = __version__
+BUILD_DATE = __build_date__
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)

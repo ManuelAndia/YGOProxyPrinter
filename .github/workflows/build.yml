@@ -1,4 +1,4 @@
-name: Build PyQt5 Executables
+name: Build PyQt5 Executables and Create Release
 
 on:
     push:
@@ -7,7 +7,27 @@ on:
         branches: [ master ]
 
 jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Get version from Python file
+        id: version
+        run: |
+          echo "Reading version from _version.py..."
+          VERSION=$(grep -E "^__version__\s*=\s*" _version.py | awk -F'"' '{print $2}')
+          if [ -z "$VERSION" ]; then
+            echo "Error: Could not extract version from _version.py"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Extracted version: ${VERSION}"
+
   build-windows:
+    needs: get-version
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,13 +60,18 @@ jobs:
         run: |
           pyinstaller --noconfirm --onefile --windowed --icon "img/logo.ico" --add-data "img/;img/" --splash "img/Splash_screen.png" YGOProxyPrinter_UI.py
 
-      - name: Upload EXE Artifact
+      - name: Create ZIP archive
+        run: |
+          7z a dist/YGOProxyPrinter-windows-${{ needs.get-version.outputs.version }}.zip dist/YGOProxyPrinter_UI.exe
+
+      - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-windows
-          path: dist\YGOProxyPrinter_UI.exe
+          path: dist/YGOProxyPrinter-windows-${{ needs.get-version.outputs.version }}.zip
 
   build-linux:
+    needs: get-version
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -59,7 +84,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y libxcb-xinerama0
+          sudo apt install -y libxcb-xinerama0 p7zip-full
           python -m pip install --upgrade pip
           pip install -r requirements.txt pyinstaller
       
@@ -81,13 +106,18 @@ jobs:
         run: |
           pyinstaller --noconfirm --onefile --windowed --icon=img/logo.ico --add-data=img:img --splash "img/Splash_screen.png" YGOProxyPrinter_UI.py
 
+      - name: Create ZIP archive
+        run: |
+          7z a dist/YGOProxyPrinter-linux-${{ needs.get-version.outputs.version }}.zip dist/YGOProxyPrinter_UI
+
       - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-linux
-          path: dist/YGOProxyPrinter_UI
+          path: dist/YGOProxyPrinter-linux-${{ needs.get-version.outputs.version }}.zip
 
   build-macos:
+    needs: get-version
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
@@ -120,16 +150,53 @@ jobs:
         run: |
           pyinstaller --noconfirm --onefile --windowed --icon=img/logo.icns --add-data=img:img --name "YGOProxyPrinter_UI" YGOProxyPrinter_UI.py
       
-      # # Package the .app into a ZIP for easier download
-      # - name: Package .app for distribution
-        # run: |
-          # cd dist
-          # zip -r YGOProxyPrinter_UI.zip YGOProxyPrinter_UI.app
+      # Package the .app into a ZIP for easier download
+      - name: Create ZIP archive
+        run: |
+          cd dist
+          zip -r YGOProxyPrinter-macos-${{ needs.get-version.outputs.version }}.zip YGOProxyPrinter_UI.app
 
       # Upload the final .app bundle as an artifact
-      - name: Upload macOS Artifact (.app bundle)
+      - name: Upload macOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: YGOProxyPrinter-macos
-          path: dist/YGOProxyPrinter_UI.app
-          #path: dist/YGOProxyPrinter_UI.zip
+          path: dist/YGOProxyPrinter-macos-${{ needs.get-version.outputs.version }}.zip
+
+  create-release:
+    needs: [get-version, build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Get build date
+        id: build-date
+        run: |
+          echo "Reading build date from _version.py..."
+          BUILD_DATE=$(grep -E "^__build_date__\s*=\s*" _version.py | awk -F'"' '{print $2}')
+          echo "build-date=${BUILD_DATE}" >> $GITHUB_OUTPUT
+          echo "Extracted build date: ${BUILD_DATE}"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.get-version.outputs.version }}
+          name: YGOProxyPrinter ${{ needs.get-version.outputs.version }} (${{ steps.build-date.outputs.build-date }})
+          body: |
+            Automated release for YGOProxyPrinter version ${{ needs.get-version.outputs.version }}
+            
+            **Build date:** ${{ steps.build-date.outputs.build-date }}
+            
+            **Downloads:**
+            - Windows: YGOProxyPrinter-windows-${{ needs.get-version.outputs.version }}.zip
+            - Linux: YGOProxyPrinter-linux-${{ needs.get-version.outputs.version }}.zip
+            - macOS: YGOProxyPrinter-macos-${{ needs.get-version.outputs.version }}.zip
+          files: |
+            artifacts/YGOProxyPrinter-windows/YGOProxyPrinter-windows-${{ needs.get-version.outputs.version }}.zip
+            artifacts/YGOProxyPrinter-linux/YGOProxyPrinter-linux-${{ needs.get-version.outputs.version }}.zip
+            artifacts/YGOProxyPrinter-macos/YGOProxyPrinter-macos-${{ needs.get-version.outputs.version }}.zip
+          draft: false
+          prerelease: false
