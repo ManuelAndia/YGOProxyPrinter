@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
+      build_date: ${{ steps.build-date.outputs.build_date }}
     steps:
       - uses: actions/checkout@v4
       
@@ -19,12 +20,15 @@ jobs:
         run: |
           echo "Reading version from _version.py..."
           VERSION=$(grep -E "^__version__\s*=\s*" _version.py | awk -F'"' '{print $2}')
+          BUILD_DATE=$(grep -E "^__build_date__\s*=\s*" _version.py | awk -F'"' '{print $2}')
           if [ -z "$VERSION" ]; then
             echo "Error: Could not extract version from _version.py"
             exit 1
           fi
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "build_date=${BUILD_DATE}" >> $GITHUB_OUTPUT
           echo "Extracted version: ${VERSION}"
+          echo "Extracted build date: ${BUILD_DATE}"
 
   build-windows:
     needs: get-version
@@ -172,23 +176,15 @@ jobs:
         with:
           path: artifacts
 
-      - name: Get build date
-        id: build-date
-        run: |
-          echo "Reading build date from _version.py..."
-          BUILD_DATE=$(grep -E "^__build_date__\s*=\s*" _version.py | awk -F'"' '{print $2}')
-          echo "build-date=${BUILD_DATE}" >> $GITHUB_OUTPUT
-          echo "Extracted build date: ${BUILD_DATE}"
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.get-version.outputs.version }}
-          name: YGOProxyPrinter ${{ needs.get-version.outputs.version }} (${{ steps.build-date.outputs.build-date }})
+          name: YGOProxyPrinter ${{ needs.get-version.outputs.version }} (${{ needs.get-version.outputs.build_date }})
           body: |
             Automated release for YGOProxyPrinter version ${{ needs.get-version.outputs.version }}
             
-            **Build date:** ${{ steps.build-date.outputs.build-date }}
+            **Build date:** ${{ needs.get-version.outputs.build_date }}
             
             **Downloads:**
             - Windows: YGOProxyPrinter-windows-${{ needs.get-version.outputs.version }}.zip
