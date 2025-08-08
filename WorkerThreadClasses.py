@@ -68,7 +68,7 @@ class WorkerThreadCardImagePull(QThread):
             self.signal.emit(10) # update progress bar
             
             res = {}
-            res_images = {}
+            #res_images = {} #TODO: remove? (useless?)
             
             for i, (n, frame_contents) in enumerate(all_params.frame_contents.items()):
                 if self.isInterruptionRequested():
@@ -77,13 +77,14 @@ class WorkerThreadCardImagePull(QThread):
                 if len(search_results) > 0:
                     ind = frame_contents["current_index"] # current index of the combo box
                     _card = search_results[ind] # Card instance corresponding to the currently-selected search result
-                    res[n] = _card.get_image_raw()
-                    res_images[n] = _card.get_image()
+                    res[n] = _card.get_image_raw(n="all", size="small") # only small images for efficiency!
+                    #res_images[n] = _card.get_image(n="all")
                 self.signal.emit(int(10 + (i/(N-1))*(80-10)))
             
             self.signal.emit(80)
             
-            elm = {"images_raw": res, "images": res_images}
+            #elm = {"images_raw": res, "images": res_images}
+            elm = {"images_raw": res}
             
             self.signal.emit(elm) # send dictionary with all the results
             
@@ -127,13 +128,21 @@ class WorkerThreadPDFExport(QThread):
             for i, (n, frame_contents) in enumerate(all_params.frame_contents.items()):
                 if self.isInterruptionRequested():
                     raise ThreadStopped("Thread was interrupted by user.")
-                _image = frame_contents["current_image"]
-                if _image is not None:
+                _image = frame_contents["current_image"] # low-res version of the image (if any)
+                if _image is not None: # fetch high-res image from server
+                    # Get parameters related to desired image
+                    _search_results = frame_contents["search_results"]
+                    _ind = frame_contents["current_index"]
+                    _artwork = frame_contents["artwork_version"]
+                    # Get the corresponding Card instance
+                    _card = _search_results[_ind]
+                    # Fetch the corresponding image (and correct artwork) with high resolution
+                    display_image = _card.get_image(n=_artwork, size="large")
                     N = n%3 # index of card horizontally
                     _x = x+N*card_w # horizontal position of current card
                     M = n//3 # index of card vertically
                     _y = y+M*card_h # vertical position of current card
-                    pdf.image(_image, _x, _y, card_w, card_h)
+                    pdf.image(display_image, _x, _y, card_w, card_h)
                 self.signal.emit(int(10 + (i/(NN-1))*(80-10)))
             
             pdf.output(save_file, "F")

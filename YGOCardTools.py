@@ -38,16 +38,34 @@ class Card(object):
             _Number = int(Number.group())
             self.Number = _Number
     
-    def get_image_URL(self):
-        return [_img["image_url"] for _img in self.Card_images]
+    def get_image_URL(self, n="all", size="small"):
+        if size=="small":
+            key = "image_url_small" 
+        elif size=="large":
+            key = "image_url"
+        else:
+            raise NotImplementedError(f"Size '{size}' is not allowed ('small' or 'large').")
+        
+        if n=="all": # return a list of all the images URLs for all the card's artworks
+            return [_img[key] for _img in self.Card_images]
+        elif isinstance(n, int): # return only the desired artwork image
+            return self.Card_images[n][key]
+        else:
+            raise TypeError(f"Value of `n` must be int, not {type(n)}.")
     
-    def get_image_raw(self):
-        url = self.get_image_URL()
-        return [requests.get(_url).content for _url in url]
+    def get_image_raw(self, n="all", size="small"):
+        url = self.get_image_URL(n=n, size=size)
+        if n=="all":
+            return [requests.get(_url).content for _url in url]
+        else:
+            return requests.get(url).content
     
-    def get_image(self):
-        url = self.get_image_URL()
-        return [Image.open(requests.get(_url, stream=True).raw) for _url in url]
+    def get_image(self, n="all", size="small"):
+        url = self.get_image_URL(n=n, size=size)
+        if n=="all":
+            return [Image.open(requests.get(_url, stream=True).raw) for _url in url]
+        else:
+            return Image.open(requests.get(url, stream=True).raw)
     
     def __repr__(self):
         return self.Name

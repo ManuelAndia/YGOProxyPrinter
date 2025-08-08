@@ -31,8 +31,8 @@ except:
 # App name and Version number
 # =============================================================================
 APP_NAME = "YGOProxyPrinter"
-VERSION = "0.3.8"
-BUILD_DATE = "2025_08_07"
+VERSION = "0.3.9"
+BUILD_DATE = "2025_08_08"
 
 MAIN_WINDOW_TITLE = "{app_name} v{version_number} (build {build_date})".format(app_name=APP_NAME, version_number=VERSION,
                      build_date=BUILD_DATE)
@@ -403,7 +403,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         search_results = all_params.frame_contents[n]["search_results"]
         if len(search_results)==0: return
         current_card = search_results[combobox_index] # Card object
-        artworks = current_card.get_image_URL()
+        artworks = current_card.get_image_URL(n="all", size="small") # only small images for efficiency!
         N_artworks = len(artworks) # number of artworks for the currently-selected search result
         if N_artworks==1:
             _combobox = self.artwork_combos[n]
